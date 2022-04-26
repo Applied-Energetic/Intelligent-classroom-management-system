@@ -1,39 +1,49 @@
 # 基于人脸识别的教室智能管理系统
 
-#### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+### 部署DVA系统
+git clone https://gitee.com/ustblab/classroom.git
+输入你的用户名和密码即可克隆
 
-#### 软件架构
-软件架构说明
+#### 前端
 
+##### 安装环境
+1、VScode 社区版
+https://code.visualstudio.com/
 
-#### 安装教程
+2、安装NPM
+https://nodejs.org/en/
+安装包下载后，一直点击next ，安装完成，打开cmd 输入 node -v 查看安装是否成功
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+3、安装mysql并新建数据库
+dvapro 
 
-#### 使用说明
+##### 进入项目目录
+cd web
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+##### 安装依赖
+npm install --registry=https://registry.npm.taobao.org
 
-#### 参与贡献
+##### 启动服务
+npm run dev
 
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
+##### 浏览器访问 http://localhost:8080
 
+### 后端
+1. 进入项目目录 cd backend
+2. 在项目根目录中，复制 ./conf/env.example.py 文件为一份新的到 ./conf 文件夹下，并重命名为 env.py
+3. 修改env.py文件提供的文件
+4. 安装依赖环境
+	pip3 install -r requirements.txt
+5. 执行迁移命令：
+	python3 manage.py makemigrations
+	python3 manage.py migrate
+6. 初始化数据
+	python3 manage.py init
+7. 初始化省市县数据:
+	python3 manage.py init_area
+8. 启动项目
+	python3 manage.py runserver 0.0.0.0:8000
 
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+访问项目
+访问地址：http://localhost:8080 (默认为此地址，如有修改请按照配置文件)
+账号：superadmin 密码：admin123456
