@@ -30,8 +30,7 @@ npm run dev
 
 ### 后端
 1. 进入项目目录 cd backend
-2. 在项目根目录中，复制 ./conf/env.example.py 文件为一份新的到 ./conf 文件夹下，并重命名为 env.py
-3. 修改env.py文件提供的文件
+
 4. 安装依赖环境
 	pip3 install -r requirements.txt
 5. 执行迁移命令：
