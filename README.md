@@ -1,7 +1,7 @@
 # 基于人脸识别的教室智能管理系统
 
 ### 部署DVA系统
-git clone https://gitee.com/ustblab/classroom.git
+git clone https://gitee.com/xia-yue/classroom.git
 输入你的用户名和密码即可克隆
 
 #### 前端
