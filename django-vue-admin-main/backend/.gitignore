@@ -92,7 +92,5 @@ __pycache__
 **/migrations
 !**/migrations/__init__.py
 *.pyc
-conf/
-!conf/env.example.py
 db.sqlite3
 media/
