@@ -2,18 +2,17 @@
   <d2-container>
     <div class="page-header">
 
-      <el-avatar src="https://q1.qlogo.cn/g?b=qq&amp;nk=190848757&amp;s=640" class="user-avatar">
+      <!-- <el-avatar src="https://q1.qlogo.cn/g?b=qq&amp;nk=190848757&amp;s=640" class="user-avatar">
 
-      </el-avatar>
+      </el-avatar> -->
       <div class="title">
-        <h1>早安, DVAdmin, 开始您一天的工作吧！</h1>
-        <span> 今日晴，20℃ - 32℃！ </span>
+        <h1>基于人脸识别的教室智能管理系统</h1>
       </div>
     </div>
 
     <el-row :gutter="20">
       <el-col :span="12">
-        <el-card class="box-card">
+        <!-- <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>友情链接</span>
 
@@ -37,7 +36,7 @@
               </el-card>
               </el-col>
           </el-row>
-        </el-card>
+        </el-card> -->
 
       </el-col>
 
@@ -60,11 +59,11 @@
             </el-row>
           </el-card>
 
-          <el-card class="box-card"  style="margin-top: 25px">
-            <div class="work">
+          <!-- <el-card class="box-card"  style="margin-top: 25px">
+             <div class="work">
               <d2-icon-svg name="work" style="margin-left: 50%;transform: translateX(-50%);height: 216px"/>
-            </div>
-          </el-card>
+            </div> 
+          </el-card> -->
         </div>
       </el-col>
     </el-row>

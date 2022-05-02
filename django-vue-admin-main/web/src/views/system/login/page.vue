@@ -18,7 +18,7 @@
       >
         <div class="page-login--content-header">
           <p class="page-login--content-header-motto">
-            时间是一切财富中最宝贵的财富
+            教室管理系统
           </p>
         </div>
         <div
