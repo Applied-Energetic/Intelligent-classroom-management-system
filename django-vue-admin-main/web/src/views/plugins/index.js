@@ -22,7 +22,7 @@ export const checkPlugins = function install (pluginName) {
       }
       // 本地插件
       return 'local'
-    } catch (exception) {}
+    } catch (exception) {}t
   }
   pluginsList = importAll(require.context('@great-dream/', true, /index\.js$/))
   if (pluginsList && pluginsList.indexOf(pluginName) !== -1) {
