@@ -25,7 +25,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '单选本地',
+        title: '教室名称',
         key: 'select1',
         sortable: true,
         search: {
@@ -76,7 +76,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '头像',
+        title: '可容纳人数',
         key: 'image',
         // type: 'image-uploader',
         type: 'avatar-uploader',
@@ -131,7 +131,7 @@ export const crudOptions = (vm) => {
         }
       },
       {
-        title: '图片',
+        title: 'null',
         key: 'files',
         type: 'image-uploader',
         width: 150,

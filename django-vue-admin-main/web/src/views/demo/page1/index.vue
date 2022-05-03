@@ -1,6 +1,6 @@
 <template>
   <d2-container :class="{ 'page-compact': crud.pageOptions.compact }">
-    <template slot="header">测试页面1</template>
+    <template slot="header">教室基础信息管理</template>
     <d2-crud-x ref="d2Crud" v-bind="_crudProps" v-on="_crudListeners">
       <div slot="header">
         <crud-search
