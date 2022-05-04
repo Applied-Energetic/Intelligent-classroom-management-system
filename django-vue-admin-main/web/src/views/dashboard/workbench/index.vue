@@ -6,7 +6,7 @@
 
       </el-avatar> -->
       <div class="title">
-        <h1>基于人脸识别的教室智能管理系统</h1>
+        <h1>基于人脸识别的教室智能管理</h1>
       </div>
     </div>
 
@@ -58,11 +58,10 @@
               </el-col>
             </el-row>
           </el-card>
-
           <!-- <el-card class="box-card"  style="margin-top: 25px">
              <div class="work">
               <d2-icon-svg name="work" style="margin-left: 50%;transform: translateX(-50%);height: 216px"/>
-            </div> 
+             </div>
           </el-card> -->
         </div>
       </el-col>
@@ -159,7 +158,7 @@ export default {
           color: 'rgb(31, 218, 202);'
         },
         {
-          name: '部门管理',
+          name: '教室管理',
           icon: 'department',
           route: {
             name: 'dept'

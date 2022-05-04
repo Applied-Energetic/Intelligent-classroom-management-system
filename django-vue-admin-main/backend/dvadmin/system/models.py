@@ -1,5 +1,6 @@
 import hashlib
 import os
+from zipfile import LargeZipFile
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -97,6 +98,7 @@ class Dept(CoreModel):
     email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
     status = models.BooleanField(default=True, verbose_name="部门状态", null=True, blank=True,
                                  help_text="部门状态")
+    large = models.CharField(max_length=32, verbose_name="教室容量", null=True, blank=True, help_text="教室容量")
     parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="上级部门",
                                db_constraint=False, null=True, blank=True, help_text="上级部门")
 

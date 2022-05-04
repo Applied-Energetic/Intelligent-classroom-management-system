@@ -34,14 +34,14 @@ npm run dev
 4. 安装依赖环境
 	pip3 install -r requirements.txt
 5. 执行迁移命令：
-	python3 manage.py makemigrations
-	python3 manage.py migrate
+	python manage.py makemigrations
+	python manage.py migrate
 6. 初始化数据
-	python3 manage.py init
+	python manage.py init
 7. 初始化省市县数据:
-	python3 manage.py init_area
+	python manage.py init_area
 8. 启动项目
-	python3 manage.py runserver 0.0.0.0:8000
+	python manage.py runserver 0.0.0.0:8000
 
 访问项目
 访问地址：http://localhost:8080 (默认为此地址，如有修改请按照配置文件)

@@ -121,14 +121,14 @@ npm run dev
 4. 安装依赖环境
 	pip3 install -r requirements.txt
 5. 执行迁移命令：
-	python3 manage.py makemigrations
-	python3 manage.py migrate
+	python manage.py makemigrations
+	python manage.py migrate
 6. 初始化数据
-	python3 manage.py init
+	python manage.py init
 7. 初始化省市县数据:
-	python3 manage.py init_area
+	python manage.py init_area
 8. 启动项目
-	python3 manage.py runserver 0.0.0.0:8000
+	python manage.py runserver 0.0.0.0:8000
 或使用 daphne :
   daphne -b 0.0.0.0 -p 8000 application.asgi:application
 ~~~

@@ -88,7 +88,7 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '上级部门',
+      title: '教室位置',
       key: 'parent',
       show: false,
       search: {
@@ -128,7 +128,7 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '部门名称',
+      title: '教室名称',
       key: 'name',
       sortable: true,
       treeNode: true, // 设置为树形列
@@ -144,14 +144,14 @@ export const crudOptions = (vm) => {
       type: 'input',
       form: {
         rules: [ // 表单校验规则
-          { required: true, message: '部门名称必填项' }
+          { required: true, message: '教学楼名称必填项' }
         ],
         component: {
           span: 12,
           props: {
             clearable: true
           },
-          placeholder: '请输入部门名称'
+          placeholder: '请输入教室名称'
         },
         itemProps: {
           class: { yxtInput: true }
@@ -202,7 +202,50 @@ export const crudOptions = (vm) => {
           { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
         ]
       }
-    }, {
+    },
+    {
+      title: '设备',
+      key: 'tools',
+      sortable: true,
+      form: {
+        component: {
+          span: 12,
+          props: {
+            clearable: true
+          },
+          placeholder: '请输入设备基本信息'
+        }
+      }
+    },
+    {
+      title: '容量',
+      key: 'large',
+      sortable: true,
+      form: {
+        component: {
+          span: 12,
+          props: {
+            clearable: true
+          },
+          placeholder: '请输入教室容量'
+        }
+      }
+    },
+    {
+      title: '使用须知',
+      key: 'message',
+      sortable: true,
+      form: {
+        component: {
+          span: 12,
+          props: {
+            clearable: true
+          },
+          placeholder: '请输入该教室使用须知'
+        }
+      }
+    },
+    {
       title: '排序',
       key: 'sort',
       sortable: true,
