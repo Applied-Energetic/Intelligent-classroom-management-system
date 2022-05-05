@@ -15,9 +15,12 @@ from dvadmin.system.models import Dept, Button, Menu, MenuButton, Role, Users
 class Initialize(CoreInitialize):
     creator_id = 1
 
+# 第一次更改结束
+# 增加了几个楼层和对应层数及教室
     def init_dept(self):
         """
         初始化部门信息
+        更改为初始化教室信息
         """
         self.dept_data = [
             {
@@ -27,7 +30,7 @@ class Initialize(CoreInitialize):
                 "dept_belong_id": 1,
                 "update_datetime": datetime.datetime.now(),
                 "create_datetime": datetime.datetime.now(),
-                "name": "DVAdmin团队",
+                "name": "逸夫楼",
                 "sort": 1,
                 "owner": "",
                 "phone": "",
@@ -43,14 +46,14 @@ class Initialize(CoreInitialize):
                 "dept_belong_id": 2,
                 "update_datetime": datetime.datetime.now(),
                 "create_datetime": datetime.datetime.now(),
-                "name": "技术部",
-                "sort": 1,
+                "name": "教学楼",
+                "sort": 2,
                 "owner": None,
                 "phone": None,
                 "email": None,
                 "status": 1,
                 "creator_id": 1,
-                "parent_id": 1
+                "parent_id": None
             },
             {
                 "id": 3,
@@ -59,7 +62,39 @@ class Initialize(CoreInitialize):
                 "dept_belong_id": 3,
                 "update_datetime": datetime.datetime.now(),
                 "create_datetime": datetime.datetime.now(),
-                "name": "运营部",
+                "name": "机电楼",
+                "sort": 3,
+                "owner": "",
+                "phone": "",
+                "email": "",
+                "status": 1,
+                "creator_id": 1,
+                "parent_id": None
+            },
+            {
+                "id": 4,
+                "description": "",
+                "modifier": "1",
+                "dept_belong_id": 3,
+                "update_datetime": datetime.datetime.now(),
+                "create_datetime": datetime.datetime.now(),
+                "name": "逸夫楼一楼",
+                "sort": 1,
+                "owner": "",
+                "phone": "",
+                "email": "",
+                "status": 1,
+                "creator_id": 1,
+                "parent_id": 1
+            },
+            {
+                "id": 5,
+                "description": "",
+                "modifier": "1",
+                "dept_belong_id": 3,
+                "update_datetime": datetime.datetime.now(),
+                "create_datetime": datetime.datetime.now(),
+                "name": "逸夫楼二楼",
                 "sort": 2,
                 "owner": "",
                 "phone": "",
@@ -67,9 +102,43 @@ class Initialize(CoreInitialize):
                 "status": 1,
                 "creator_id": 1,
                 "parent_id": 1
+            },
+            {
+                "id": 6,
+                "description": "",
+                "modifier": "1",
+                "dept_belong_id": 3,
+                "update_datetime": datetime.datetime.now(),
+                "create_datetime": datetime.datetime.now(),
+                "name": "101",
+                "large": 32,
+                "sort": 1,
+                "owner": "",
+                "phone": "",
+                "email": "",
+                "status": 1,
+                "creator_id": 1,
+                "parent_id": 4
+            },
+            {
+                "id": 7,
+                "description": "",
+                "modifier": "1",
+                "dept_belong_id": 3,
+                "update_datetime": datetime.datetime.now(),
+                "create_datetime": datetime.datetime.now(),
+                "name": "102",
+                "large": 32,
+                "sort": 2,
+                "owner": "",
+                "phone": "",
+                "email": "",
+                "status": 1,
+                "creator_id": 1,
+                "parent_id": 4
             }
         ]
-        self.save(Dept, self.dept_data, "部门信息")
+        self.save(Dept, self.dept_data, "教室信息")
 
     def init_button(self):
         """
@@ -178,6 +247,11 @@ class Initialize(CoreInitialize):
         ]
         self.save(Button, self.button_data, "权限表标识")
 
+# 第一次更改结束
+# 不需要的官网状态改为0
+# 增加账号管理目录
+# 增加预定管理
+# 同时把原来的部门管理更改为教室管理
     def init_menu(self):
         """
         初始化菜单表
@@ -225,6 +299,7 @@ class Initialize(CoreInitialize):
                 "parent_id": None,
                 "is_catalog": 1
             },
+            # 更改上级菜单：parent
             {
                 "id": 3,
                 "description": "",
@@ -243,9 +318,10 @@ class Initialize(CoreInitialize):
                 "cache": 0,
                 "visible": 1,
                 "creator_id": 1,
-                "parent_id": 2,
+                "parent_id": 24,
                 "is_catalog": 0
             },
+            # 更改上级菜单：parent
             {
                 "id": 4,
                 "description": "",
@@ -264,7 +340,7 @@ class Initialize(CoreInitialize):
                 "cache": 0,
                 "visible": 1,
                 "creator_id": 1,
-                "parent_id": 2,
+                "parent_id": 24,
                 "is_catalog": 0
             },
             {
@@ -275,7 +351,7 @@ class Initialize(CoreInitialize):
                 "update_datetime": datetime.datetime.now(),
                 "create_datetime": datetime.datetime.now(),
                 "icon": "bank",
-                "name": "部门管理",
+                "name": "教室管理",     # 更改为教室管理
                 "sort": 3,
                 "is_link": 0,
                 "web_path": "/dept",
@@ -285,7 +361,7 @@ class Initialize(CoreInitialize):
                 "cache": 0,
                 "visible": 1,
                 "creator_id": 1,
-                "parent_id": 2,
+                "parent_id": None,
                 "is_catalog": 0
             },
             {
@@ -477,6 +553,7 @@ class Initialize(CoreInitialize):
                 "parent_id": None,
                 "is_catalog": 1
             },
+            # status改为0
             {
                 "id": 18,
                 "description": "",
@@ -491,7 +568,7 @@ class Initialize(CoreInitialize):
                 "web_path": "https://django-vue-admin.com",
                 "component": "",
                 "component_name": "",
-                "status": 1,
+                "status": 0,
                 "cache": 0,
                 "visible": 1,
                 "creator_id": 1,
@@ -539,6 +616,50 @@ class Initialize(CoreInitialize):
                 "creator_id": 1,
                 "parent_id": 15,
                 "is_catalog": 0
+            },
+            # 新增预约管理
+            {
+                "id": 23,
+                "description": "",
+                "modifier": "1",
+                "dept_belong_id": 1,
+                "update_datetime": datetime.datetime.now(),
+                "create_datetime": datetime.datetime.now(),
+                "icon": "file-text",
+                "name": "预约管理",
+                "sort": 4,
+                "is_link": 0,
+                "web_path": "/calendar-check-o",
+                "component": "system/log/book/index",
+                "component_name": "book",
+                "status": 1,
+                "cache": 0,
+                "visible": 1,
+                "creator_id": 1,
+                "parent_id": None,
+                "is_catalog": 0
+            },
+            # 新增账号管理，为上级菜单
+            {   
+                "id": 24,
+                "description": "",
+                "modifier": "1",
+                "dept_belong_id": 1,
+                "update_datetime": datetime.datetime.now(),
+                "create_datetime": datetime.datetime.now(),
+                "icon": "book",
+                "name": "日志管理",
+                "sort": 6,
+                "is_link": 0,
+                "web_path": "",
+                "component": "",
+                "component_name": "",
+                "status": 1,
+                "cache": 0,
+                "visible": 1,
+                "creator_id": 1,
+                "parent_id": None,
+                "is_catalog": 1
             }
         ]
         self.save(Menu, self.menu_data, "菜单表")
@@ -1320,6 +1441,7 @@ class Initialize(CoreInitialize):
         ]
         self.save(MenuButton, self.menu_button_data, "菜单按钮表")
 
+# 第一次更改，增加教师和学生角色
     def init_role(self):
         """
         初始化角色表
@@ -1338,6 +1460,42 @@ class Initialize(CoreInitialize):
                 "status": 1,
                 "admin": 1,
                 "data_range": 3,
+                "menu": [ele.get("id") for ele in self.menu_data],
+                "permission": [ele.get("id") for ele in self.menu_button_data],
+                "remark": None,
+                "creator_id": 1
+            },
+            {
+                "id": 2,
+                "description": None,
+                "modifier": "1",
+                "dept_belong_id": 1,
+                "update_datetime": datetime.datetime.now(),
+                "create_datetime": datetime.datetime.now(),
+                "name": "教师",
+                "key": "teacher",
+                "sort": 2,
+                "status": 1,
+                "admin": 0,
+                "data_range": 3,
+                "menu": [ele.get("id") for ele in self.menu_data],
+                "permission": [ele.get("id") for ele in self.menu_button_data],
+                "remark": None,
+                "creator_id": 1
+            },
+            {
+                "id": 1,
+                "description": None,
+                "modifier": "1",
+                "dept_belong_id": 1,
+                "update_datetime": datetime.datetime.now(),
+                "create_datetime": datetime.datetime.now(),
+                "name": "学生",
+                "key": "student",
+                "sort": 3,
+                "status": 1,
+                "admin": 0,
+                "data_range": 0,
                 "menu": [ele.get("id") for ele in self.menu_data],
                 "permission": [ele.get("id") for ele in self.menu_button_data],
                 "remark": None,
