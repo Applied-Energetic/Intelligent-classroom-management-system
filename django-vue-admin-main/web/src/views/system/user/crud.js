@@ -1,6 +1,6 @@
 import { request } from '@/api/service'
 import { BUTTON_STATUS_BOOL } from '@/config/button'
-import { urlPrefix as deptPrefix } from '../dept/api'
+// import { urlPrefix as deptPrefix } from '../dept/api'
 import util from '@/libs/util'
 
 const uploadUrl = util.baseURL() + 'api/system/file/'
@@ -136,6 +136,7 @@ export const crudOptions = (vm) => {
           }
         }
       },
+      /*
       {
         title: '部门',
         key: 'dept',
@@ -187,7 +188,7 @@ export const crudOptions = (vm) => {
             }
           }
         }
-      },
+      }, */
       {
         title: '手机号码',
         key: 'mobile',
