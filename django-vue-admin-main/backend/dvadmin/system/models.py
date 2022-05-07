@@ -11,6 +11,8 @@ STATUS_CHOICES = (
     (0, "禁用"),
     (1, "启用"),
 )
+# 其他status同样可以控制启用与否
+# sort可以决定排序
 
 
 class Users(AbstractUser, CoreModel):
@@ -33,6 +35,7 @@ class Users(AbstractUser, CoreModel):
                                     help_text="用户类型")
     post = models.ManyToManyField(to='Post', verbose_name='关联岗位', db_constraint=False, help_text="关联岗位")
     role = models.ManyToManyField(to='Role', verbose_name='关联角色', db_constraint=False, help_text="关联角色")
+    # 不需要对应教室
     dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True,
                              blank=True, help_text="关联部门")
 
@@ -89,16 +92,16 @@ class Role(CoreModel):
         verbose_name_plural = verbose_name
         ordering = ('sort',)
 
-
+# dept更改为教室类，需要增加large段
 class Dept(CoreModel):
-    name = models.CharField(max_length=64, verbose_name="部门名称", help_text="部门名称")
+    name = models.CharField(max_length=64, verbose_name="教室名称", help_text="教室名称")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
     owner = models.CharField(max_length=32, verbose_name="负责人", null=True, blank=True, help_text="负责人")
     phone = models.CharField(max_length=32, verbose_name="联系电话", null=True, blank=True, help_text="联系电话")
     email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
-    status = models.BooleanField(default=True, verbose_name="部门状态", null=True, blank=True,
-                                 help_text="部门状态")
-    large = models.CharField(max_length=32, verbose_name="教室容量", null=True, blank=True, help_text="教室容量")
+    status = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True,
+                                 help_text="教室状态")
+    large = models.IntegerField(default=0, verbose_name="教室容量", null=True, blank=True, help_text="教室容量")
     parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="上级部门",
                                db_constraint=False, null=True, blank=True, help_text="上级部门")
 
@@ -108,6 +111,24 @@ class Dept(CoreModel):
         verbose_name_plural = verbose_name
         ordering = ('sort',)
 
+# 新增类预订
+class Book(CoreModel):
+    booker = models.CharField(max_length=40, verbose_name="预订人", help_text="预订人")
+    phone = models.CharField(max_length=32, verbose_name="联系电话", null=True, blank=True, help_text="联系电话")
+    email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
+    begin_date = models.DateField(editable=True, verbose_name="预订日期", help_text="预订日期")
+    begin_time = models.TimeField(editable=True, verbose_name="预订时间", help_text="预订时间")
+    end_time = models.TimeField(editable=True, verbose_name="结束时间", help_text="结束时间")
+    reason = models.CharField(max_length=256, verbose_name="申请理由", help_text="申请理由")
+    sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
+    dept = models.ForeignKey(to='Dept', verbose_name='预订教室', on_delete=models.PROTECT, db_constraint=False, null=True,
+                             blank=True, help_text="预订教室")
+
+    class Meta:
+        db_table = table_prefix + "system_book"
+        verbose_name = '预定表'
+        verbose_name_plural = verbose_name
+        ordering = ('sort',)
 
 class Button(CoreModel):
     name = models.CharField(max_length=64, unique=True, verbose_name="权限名称", help_text="权限名称")
