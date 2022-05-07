@@ -95,12 +95,13 @@ class Role(CoreModel):
 # dept更改为教室类，需要增加large段
 class Dept(CoreModel):
     name = models.CharField(max_length=64, verbose_name="教室名称", help_text="教室名称")
-    sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
+    sort = models.IntegerField(default=1, verbose_name="排序", help_text="排序")
     owner = models.CharField(max_length=32, verbose_name="负责人", null=True, blank=True, help_text="负责人")
     phone = models.CharField(max_length=32, verbose_name="联系电话", null=True, blank=True, help_text="联系电话")
     email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
-    status = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True,
-                                 help_text="教室状态")
+    tools = models.CharField(max_length=32, verbose_name="设备", null=True, blank=True, help_text="设备")
+    message = models.CharField(max_length=32, verbose_name="使用须知", null=True, blank=True, help_text="使用须知")
+    status = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
     large = models.IntegerField(default=0, verbose_name="教室容量", null=True, blank=True, help_text="教室容量")
     parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="上级部门",
                                db_constraint=False, null=True, blank=True, help_text="上级部门")
@@ -113,9 +114,15 @@ class Dept(CoreModel):
 
 # 新增类预订
 class Book(CoreModel):
-    booker = models.CharField(max_length=40, verbose_name="预订人", help_text="预订人")
-    phone = models.CharField(max_length=32, verbose_name="联系电话", null=True, blank=True, help_text="联系电话")
+    booker = models.CharField(max_length=40, blank=False, verbose_name="姓名", help_text="姓名")
+    name = models.CharField(max_length=64, null=True, blank=False, verbose_name="教室名称", help_text="教室名称")
+    phone = models.CharField(max_length=32, verbose_name="联系电话", null=True, blank=False, help_text="联系电话")
     email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
+    NEED_CHOICES = (
+        (0, "取消"),
+        (1, "预订"),
+    )
+    need = models.IntegerField(choices=NEED_CHOICES, default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
     begin_date = models.DateField(editable=True, verbose_name="预订日期", help_text="预订日期")
     begin_time = models.TimeField(editable=True, verbose_name="预订时间", help_text="预订时间")
     end_time = models.TimeField(editable=True, verbose_name="结束时间", help_text="结束时间")
@@ -127,6 +134,19 @@ class Book(CoreModel):
     class Meta:
         db_table = table_prefix + "system_book"
         verbose_name = '预定表'
+        verbose_name_plural = verbose_name
+        ordering = ('sort',)
+
+# 新增类出勤
+class Student(CoreModel):
+    name = models.CharField(max_length=64, unique=True, blank=False, verbose_name="课程名称", help_text="课程名称")
+    avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=False, help_text="出勤照片")
+    number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
+    sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
+
+    class Meta:
+        db_table = table_prefix + "system_student"
+        verbose_name = '出勤表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
 
