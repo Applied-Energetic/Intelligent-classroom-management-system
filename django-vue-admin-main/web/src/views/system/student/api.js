@@ -1,20 +1,14 @@
 import { request } from '@/api/service'
-import XEUtils from 'xe-utils'
 export const urlPrefix = '/api/system/student/'
 
 /**
  * 列表查询
  */
 export function GetList (query) {
-  query.limit = 999
   return request({
     url: urlPrefix,
     method: 'get',
     params: query
-  }).then(res => {
-    // 将列表数据转换为树形数据
-    res.data.data = XEUtils.toArrayTree(res.data.data, { parentKey: 'parent', strict: false })
-    return res
   })
 }
 /**

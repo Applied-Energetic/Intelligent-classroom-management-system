@@ -25,6 +25,8 @@ export const BUTTON_STATUS_BOOL = getButtonSettings([{ label: '空闲', value: t
 
 export const BUTTON_NEED_BOOL = getButtonSettings([{ label: '预订', value: true }, { label: '取消', value: false }])
 
+export const BUTTON_ADMIN_BOOL = getButtonSettings([{ label: '同意', value: true }, { label: '拒绝', value: false }])
+
 // 启用 1/ 禁用 0
 export const BUTTON_STATUS_NUMBER = getButtonSettings([{ label: '启用', value: 1 }, { label: '禁用', value: 0 }])
 

@@ -2,6 +2,7 @@ import { request } from '@/api/service'
 import { BUTTON_STATUS_BOOL } from '@/config/button'
 // import { urlPrefix as deptPrefix } from '../dept/api'
 import util from '@/libs/util'
+// import { Avatar } from 'node_modules/element-ui/types/element-ui'
 
 const uploadUrl = util.baseURL() + 'api/system/file/'
 export const crudOptions = (vm) => {

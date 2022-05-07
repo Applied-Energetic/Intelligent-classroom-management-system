@@ -1,6 +1,6 @@
 import { request } from '@/api/service'
 import { BUTTON_NEED_BOOL } from '@/config/button'
-import { urlPrefix as deptPrefix } from './api'
+import { urlPrefix as bookPrefix } from './api'
 import XEUtils from 'xe-utils'
 export const crudOptions = (vm) => {
   return {
@@ -49,7 +49,6 @@ export const crudOptions = (vm) => {
       align: 'center',
       width: 100
     },
-
     viewOptions: {
       componentType: 'form'
     },
@@ -97,7 +96,7 @@ export const crudOptions = (vm) => {
       type: 'cascader',
       dict: {
         cache: false,
-        url: deptPrefix + '?limit=999&status=1',
+        url: bookPrefix + '?limit=999&status=1',
         isTree: true,
         value: 'id', // 数据字典中value字段的属性名
         label: 'name', // 数据字典中label字段的属性名
@@ -112,7 +111,6 @@ export const crudOptions = (vm) => {
       form: {
         component: {
           span: 12,
-
           props: {
             elProps: {
               clearable: true,
