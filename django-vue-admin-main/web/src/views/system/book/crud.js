@@ -1,6 +1,6 @@
 import { request } from '@/api/service'
 import { BUTTON_NEED_BOOL } from '@/config/button'
-import { urlPrefix as bookPrefix } from './api'
+import { urlPrefix as deptPrefix } from './api'
 import XEUtils from 'xe-utils'
 export const crudOptions = (vm) => {
   return {
@@ -88,7 +88,7 @@ export const crudOptions = (vm) => {
     },
     {
       title: '教室位置',
-      key: 'parent',
+      key: 'dept',
       show: false,
       search: {
         disabled: true
@@ -96,14 +96,12 @@ export const crudOptions = (vm) => {
       type: 'cascader',
       dict: {
         cache: false,
-        url: bookPrefix + '?limit=999&status=1',
-        isTree: true,
+        url: deptPrefix,
         value: 'id', // 数据字典中value字段的属性名
         label: 'name', // 数据字典中label字段的属性名
-        children: 'children', // 数据字典中children字段的属性名
         getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
           return request({ url: url }).then(ret => {
-            const data = XEUtils.toArrayTree(ret.data.data, { parentKey: 'parent', strict: true })
+            const data = XEUtils.toArrayTree(ret.data.data, { parentKey: 'dept', strict: true })
             return [{ id: '0', name: '根节点', children: data }]
           })
         }
@@ -155,7 +153,7 @@ export const crudOptions = (vm) => {
     },
     {
       title: '姓名',
-      key: 'owner',
+      key: 'booker',
       sortable: true,
       form: {
         component: {
