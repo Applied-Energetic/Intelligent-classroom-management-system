@@ -130,6 +130,7 @@ class UserViewSet(CustomModelViewSet):
     serializer_class = UserSerializer
     create_serializer_class = UserCreateSerializer
     update_serializer_class = UserUpdateSerializer
+    # 查询
     filter_fields = ['name', 'username', 'gender', 'is_active', 'dept', 'user_type']
     # filter_fields = {
     #     'name': ['icontains'],

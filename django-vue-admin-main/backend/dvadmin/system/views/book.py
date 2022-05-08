@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
+@author: 陈佳婧
 @Remark: 预订管理
 """
 from dvadmin.system.models import Book
