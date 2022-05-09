@@ -1,9 +1,10 @@
 /*
  * @Auther: 夏妍
  * @文件介绍: 预约管理
- */import { request } from '@/api/service'
+ */
+import { request } from '@/api/service'
 export const urlPrefix = '/api/system/student/'
-
+import XEUtils from 'xe-utils'
 /**
  * 列表查询
  */

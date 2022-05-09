@@ -55,6 +55,5 @@ urlpatterns = [
     path('system_config/get_relation_info/', SystemConfigViewSet.as_view({'get': 'get_relation_info'})),
     path('login_log/', LoginLogViewSet.as_view({'get': 'list'})),
     path('login_log/<int:pk>/', LoginLogViewSet.as_view({'get': 'retrieve'})),
-    path('student/identify/', StudentViewSet.as_view({'POST': 'identify'})),
 ]
 urlpatterns += system_url.urls

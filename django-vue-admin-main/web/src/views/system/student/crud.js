@@ -1,7 +1,8 @@
-// import { request } from '@/api/service'
+import { request } from '@/api/service'
 // import { BUTTON_STATUS_BOOL } from '@/config/button'
 import util from '@/libs/util'
-
+import { urlPrefix as studentPrefix } from './api'
+import XEUtils from 'xe-utils'
 const uploadUrl = util.baseURL() + 'api/system/file/'
 export const crudOptions = (vm) => {
   return {
@@ -139,6 +140,29 @@ export const crudOptions = (vm) => {
               }
               return value
             }
+          }
+        }
+      },
+      {
+        title: '出勤人数',
+        key: 'number',
+        dict: {
+          cache: false,
+          url: studentPrefix,
+          value: 'id',
+          lable: 'number',
+          getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
+            return request({ url: url }).then(ret => {
+              const data = XEUtils(ret.data.data)
+              return data
+            })
+          }
+        },
+        form: {
+          disabled: true,
+          value: true,
+          component: {
+            span: 12
           }
         }
       },

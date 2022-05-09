@@ -1,5 +1,5 @@
 import { request } from '@/api/service'
-import { BUTTON_BOOK_BOOL } from '@/config/button'
+import { BUTTON_BOOK_BOOL, BUTTON_ADMIN_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from '../dept/api'
 // import util from '@/libs/util'
 // import { Avatar } from 'node_modules/element-ui/types/element-ui'
@@ -120,9 +120,6 @@ export const crudOptions = (vm) => {
           }
         },
         form: {
-          rules: [ // 表单校验规则
-            { required: true, message: '必填项' }
-          ],
           itemProps: {
             class: { yxtInput: true }
           },
@@ -142,7 +139,7 @@ export const crudOptions = (vm) => {
                 },
                 {
                   field: 'parent_name',
-                  title: '父级部门'
+                  title: '教室位置'
                 }
               ]
             }
@@ -212,6 +209,22 @@ export const crudOptions = (vm) => {
               clearable: true
             },
             placeholder: '请输入申请理由'
+          }
+        }
+      },
+      {
+        title: '管理员审批',
+        key: 'opinion',
+        width: 70,
+        type: 'radio',
+        dict: {
+          data: BUTTON_ADMIN_BOOL
+        },
+        form: {
+          disabled: true,
+          value: true,
+          component: {
+            span: 12
           }
         }
       }

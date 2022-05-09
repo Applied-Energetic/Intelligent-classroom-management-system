@@ -51,7 +51,6 @@ export default {
       return api.createObj(row)
     },
     updateRequest (row) {
-      d2CrudPlus.util.dict.clear()
       return api.UpdateObj(row)
     },
     delRequest (row) {

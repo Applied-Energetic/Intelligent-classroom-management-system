@@ -29,6 +29,7 @@ import os               # 文件夹目录
 
 def face_identify(image_url):
     image_path = os.path.join(settings.MEDIA_ROOT,image_url)
+    #image_path = os.path.join(image_url)
 
     image = face_recognition.load_image_file(image_path)
     
@@ -55,10 +56,14 @@ def face_identify(image_url):
 
         img_draw.rectangle(((left, top), (right, bottom)), fill=None, outline='red', width=3)
 
-    img_with_box_path = os.path.join(settings.MEDIA_ROOT,'face_id',image_url)
-    img_with_red_box.save(img_with_box_path)
+    # img_with_box_path = os.path.join(settings.MEDIA_ROOT,'face_id',image_url)
+    # img_with_red_box.save(img_with_box_path)
     
     img_with_red_box.show() 
 
     return faceNum
+
+#image_url = r"http://127.0.0.1:8000/media/files/3/0/30a7eca4b47a5a23fb8864b39f9fce05_AKHQVRx.jpeg"
+#facenum = face_identify(image_url)
+#print (facenum)
 
