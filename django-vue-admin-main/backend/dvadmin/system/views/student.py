@@ -38,3 +38,12 @@ class StudentViewSet(CustomModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     extra_filter_backends = []
+
+    @action(methods=['POST'], detail=True, permission_classes=[IsAuthenticated])
+    def identify(self, request):
+        """人脸识别"""
+        student = request.student
+        image_url = student.avatar
+        facenum = face_identify(image_url)
+        Student.objects.filter(id=student.id).update(number=facenum)
+        return DetailResponse(data=None, msg="识别成功")
