@@ -1,27 +1,21 @@
 import { request } from '@/api/service'
-import { BUTTON_NEED_BOOL } from '@/config/button'
-import { urlPrefix as deptPrefix } from './api'
-import XEUtils from 'xe-utils'
+import { BUTTON_BOOK_BOOL } from '@/config/button'
+import { urlPrefix as deptPrefix } from '../dept/api'
+// import util from '@/libs/util'
+// import { Avatar } from 'node_modules/element-ui/types/element-ui'
+
+// const uploadUrl = util.baseURL() + 'api/system/file/'
 export const crudOptions = (vm) => {
   return {
-    pagination: false,
     pageOptions: {
       compact: true
     },
     options: {
-      // tableType: 'vxe-table',
-      // rowKey: true, // 必须设置，true or false
-      rowId: 'id',
-      height: '100%', // 表格高度100%, 使用toolbar必须设置
-      highlightCurrentRow: false,
-      defaultExpandAll: true
-      // treeConfig: { // 树形数据配置
-      //   expandAll: true,
-      //   children: 'children',
-      // }
+      height: '100%'
     },
     rowHandle: {
-      width: 140,
+      fixed: 'right',
+      width: 180,
       view: {
         thin: true,
         text: '',
@@ -44,178 +38,183 @@ export const crudOptions = (vm) => {
         }
       }
     },
-    indexRow: { // 或者直接传true,不显示title，不居中
-      title: '序号',
-      align: 'center',
-      width: 100
-    },
     viewOptions: {
       componentType: 'form'
     },
     formOptions: {
       defaultSpan: 12 // 默认的表单 span
     },
-    columns: [{
-      title: '关键词',
-      key: 'search',
-      show: false,
-      disabled: true,
-      search: {
-        disabled: false
-      },
-      form: {
+    indexRow: { // 或者直接传true,不显示title，不居中
+      title: '序号',
+      align: 'center',
+      width: 70
+    },
+    columns: [
+      {
+        title: '关键词',
+        key: 'search',
+        show: false,
         disabled: true,
-        component: {
-          props: {
-            clearable: true
+        search: {
+          disabled: false
+        },
+        form: {
+          disabled: true,
+          component: {
+            placeholder: '请输入关键词'
+          }
+        },
+        view: {
+          disabled: true
+        }
+      },
+      {
+        title: 'ID',
+        key: 'id',
+        width: 90,
+        disabled: true,
+        form: {
+          disabled: true
+        }
+      },
+      {
+        title: '姓名',
+        key: 'booker',
+        search: {
+          disabled: false
+        },
+        type: 'input',
+        form: {
+          rules: [ // 表单校验规则
+            { required: true, message: '姓名必填项' }
+          ],
+          component: {
+            span: 12,
+            placeholder: '请输入姓名'
           },
-          placeholder: '请输入关键词'
+          itemProps: {
+            class: { yxtInput: true }
+          }
         }
       },
-      view: { // 查看对话框组件的单独配置
-        disabled: true
-      }
-    },
-    {
-      title: 'ID',
-      key: 'id',
-      show: false,
-      disabled: true,
-      width: 90,
-      form: {
-        disabled: true
-      }
-    },
-    {
-      title: '教室位置',
-      key: 'dept',
-      show: false,
-      search: {
-        disabled: true
-      },
-      type: 'cascader',
-      dict: {
-        cache: false,
-        url: deptPrefix,
-        value: 'id', // 数据字典中value字段的属性名
-        label: 'name', // 数据字典中label字段的属性名
-        getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
-          return request({ url: url }).then(ret => {
-            const data = XEUtils.toArrayTree(ret.data.data, { parentKey: 'dept', strict: true })
-            return [{ id: '0', name: '根节点', children: data }]
-          })
-        }
-      },
-      form: {
-        component: {
-          span: 12,
-          props: {
+      {
+        title: '教室位置',
+        key: 'dept',
+        search: {
+          disabled: true
+        },
+        minWidth: 140,
+        type: 'table-selector',
+        dict: {
+          cache: false,
+          url: deptPrefix,
+          value: 'id', // 数据字典中value字段的属性名
+          label: 'name', // 数据字典中label字段的属性名
+          getData: (url, dict, { form, component }) => {
+            return request({ url: url, params: { page: 1, limit: 10, status: 1 } }).then(ret => {
+              component._elProps.page = ret.data.page
+              component._elProps.limit = ret.data.limit
+              component._elProps.total = ret.data.total
+              return ret.data.data
+            })
+          }
+        },
+        form: {
+          rules: [ // 表单校验规则
+            { required: true, message: '必填项' }
+          ],
+          itemProps: {
+            class: { yxtInput: true }
+          },
+          component: {
+            span: 12,
+            props: { multiple: false },
             elProps: {
-              clearable: true,
-              showAllLevels: false, // 仅显示最后一级
-              props: {
-                checkStrictly: true, // 可以不需要选到最后一级
-                emitPath: false,
-                clearable: true
-              }
+              pagination: true,
+              columns: [
+                {
+                  field: 'name',
+                  title: '教室名称'
+                },
+                {
+                  field: 'status_label',
+                  title: '状态'
+                },
+                {
+                  field: 'parent_name',
+                  title: '父级部门'
+                }
+              ]
             }
           }
         }
-      }
-    },
-    {
-      title: '教室名称',
-      key: 'name',
-      sortable: true,
-      treeNode: true, // 设置为树形列
-      search: {
-        disabled: false,
-        component: {
-          props: {
-            clearable: true
+      },
+      {
+        title: '手机号码',
+        key: 'mobile',
+        search: {
+          disabled: true
+        },
+        minWidth: 110,
+        type: 'input',
+        form: {
+          rules: [
+            { max: 20, message: '请输入正确的手机号码', trigger: 'blur' },
+            { pattern: /^1[3|4|5|7|8]\d{9}$/, message: '请输入正确的手机号码' }
+          ],
+          itemProps: {
+            class: { yxtInput: true }
+          },
+          component: {
+            placeholder: '请输入手机号码'
           }
         }
       },
-      width: 180,
-      type: 'input',
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入教室名称'
-        },
-        itemProps: {
-          class: { yxtInput: true }
+      {
+        title: '邮箱',
+        key: 'email',
+        minWidth: 160,
+        form: {
+          rules: [
+            { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
+          ],
+          component: {
+            placeholder: '请输入邮箱'
+          }
         }
-      }
-    },
-    {
-      title: '姓名',
-      key: 'booker',
-      sortable: true,
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入姓名'
-        }
-      }
-    },
-    {
-      title: '联系电话',
-      key: 'phone',
-      sortable: true,
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入联系电话'
-        }
-      }
-    },
-    {
-      title: '邮箱',
-      key: 'email',
-      sortable: true,
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入邮箱'
-        },
-        rules: [
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-        ]
-      }
-    },
-    {
-      title: '状态',
-      key: 'need',
-      sortable: true,
-      search: {
-        disabled: false
       },
-      width: 90,
-      type: 'radio',
-      dict: {
-        data: BUTTON_NEED_BOOL
+      {
+        title: '状态',
+        key: 'need',
+        search: {
+          disabled: false
+        },
+        width: 70,
+        type: 'radio',
+        dict: {
+          data: BUTTON_BOOK_BOOL
+        },
+        form: {
+          value: true,
+          component: {
+            span: 12
+          }
+        }
       },
-      form: {
-        value: true,
-        component: {
-          span: 12,
-          placeholder: '请选择状态'
+      {
+        title: '申请理由',
+        key: 'reason',
+        sortable: true,
+        form: {
+          component: {
+            span: 12,
+            props: {
+              clearable: true
+            },
+            placeholder: '请输入申请理由'
+          }
         }
       }
-    }
-    ].concat(vm.commonEndColumns())
+    ].concat(vm.commonEndColumns({ update_datetime: { showForm: false, showTable: false }, create_datetime: { showForm: false, showTable: true } }))
   }
 }

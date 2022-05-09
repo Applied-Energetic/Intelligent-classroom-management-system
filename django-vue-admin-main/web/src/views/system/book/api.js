@@ -1,29 +1,20 @@
 /*
+ * @Auther: 夏妍
  * @文件介绍: 预约管理
  */
 import { request } from '@/api/service'
-import XEUtils from 'xe-utils'
+
 export const urlPrefix = '/api/system/book/'
 
-/**
- * 列表查询
- */
 export function GetList (query) {
-  query.limit = 999
   return request({
     url: urlPrefix,
     method: 'get',
     params: query
-  }).then(res => {
-    // 将列表数据转换为树形数据
-    res.data.data = XEUtils.toArrayTree(res.data.data, { parentKey: 'parent', strict: false })
-    return res
   })
 }
-/**
- * 新增
- */
-export function createObj (obj) {
+
+export function AddObj (obj) {
   return request({
     url: urlPrefix,
     method: 'post',
@@ -31,9 +22,6 @@ export function createObj (obj) {
   })
 }
 
-/**
- * 修改
- */
 export function UpdateObj (obj) {
   return request({
     url: urlPrefix + obj.id + '/',
@@ -41,9 +29,7 @@ export function UpdateObj (obj) {
     data: obj
   })
 }
-/**
- * 删除
- */
+
 export function DelObj (id) {
   return request({
     url: urlPrefix + id + '/',

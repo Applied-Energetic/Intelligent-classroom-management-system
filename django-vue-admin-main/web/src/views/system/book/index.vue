@@ -47,28 +47,17 @@ export default {
       return api.GetList(query)
     },
     addRequest (row) {
-      d2CrudPlus.util.dict.clear()
-      return api.createObj(row)
+      return api.AddObj(row)
     },
     updateRequest (row) {
-      d2CrudPlus.util.dict.clear()
       return api.UpdateObj(row)
     },
     delRequest (row) {
       return api.DelObj(row.id)
-    },
-    // 授权
-    createPermission (scope) {
-      this.$router.push({
-        name: 'menuButton',
-        params: { id: scope.row.id },
-        query: { name: scope.row.name }
-      })
     }
   }
 }
 </script>
-
 <style lang="scss">
 .yxtInput {
   .el-form-item__label {
