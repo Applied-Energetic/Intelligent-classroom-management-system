@@ -142,6 +142,9 @@ class Student(CoreModel):
     number = models.IntegerField(default=7, verbose_name="出勤人数", help_text="出勤人数")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
 
+    def set_number(self, number):
+        self.number = number
+
     class Meta:
         db_table = table_prefix + "system_student"
         verbose_name = '出勤表'

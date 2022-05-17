@@ -6,6 +6,7 @@
 """
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import serializers
 
 from dvadmin.system.models import Student
 from dvadmin.system.views.file_list import FileSerializer
@@ -25,6 +26,28 @@ class StudentSerializer(CustomModelSerializer):
         fields = "__all__"
         read_only_fields = ["id"]
 
+class StudentCreateSerializer(CustomModelSerializer):
+    """
+    出勤新增-序列化器
+    """
+
+    def save(self, **kwargs):
+        data = super().save(**kwargs)
+        number = face_identify(str(self.initial_data.get('avatar','')))
+        # data.post.set(self.initial_data.get('post', []))
+        # self.initial_data['number'] = number
+        data.set_number(number)
+        data.save()
+        return data
+
+    class Meta:
+        model = Student
+        fields = "__all__"
+        read_only_fields = ["id"]
+        extra_kwargs = {
+            'post': {'required': False},
+        }
+
 
 class StudentViewSet(CustomModelViewSet):
     """
@@ -37,13 +60,14 @@ class StudentViewSet(CustomModelViewSet):
     """
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    create_serializer_class = StudentCreateSerializer
     extra_filter_backends = []
 
-    @action(methods=['POST'], detail=True, permission_classes=[IsAuthenticated])
-    def identify(self, request):
-        """人脸识别"""
-        student = request.student
-        image_url = student.avatar
-        facenum = face_identify(image_url)
-        Student.objects.filter(id=student.id).update(number=facenum)
-        return DetailResponse(data=None, msg="识别成功")
+    # @action(methods=['POST'], detail=True, permission_classes=[IsAuthenticated])
+    # def identify(self, request):
+    #     """人脸识别"""
+    #     student = request.student
+    #     image_url = student.avatar
+    #     facenum = face_identify(image_url)
+    #     Student.objects.filter(id=student.id).update(number=facenum)
+    #     return DetailResponse(data=None, msg="识别成功")

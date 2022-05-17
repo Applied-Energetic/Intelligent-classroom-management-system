@@ -28,8 +28,12 @@ import face_recognition             # 人脸识别
 import os               # 文件夹目录
 
 def face_identify(image_url):
-    image_path = os.path.join(settings.MEDIA_ROOT,image_url)
-    #image_path = os.path.join(image_url)
+    # image_path = os.path.join(settings.MEDIA_ROOT,image_url)
+    # image_path = os.path.join(image_url)
+    image_url1 = image_url[21:]
+    BASE_DIR = str(settings.BASE_DIR)
+    BASE_DIR = BASE_DIR.replace("\\","/")
+    image_path = BASE_DIR + image_url1
 
     image = face_recognition.load_image_file(image_path)
     
@@ -63,7 +67,12 @@ def face_identify(image_url):
 
     return faceNum
 
-#image_url = r"http://127.0.0.1:8000/media/files/3/0/30a7eca4b47a5a23fb8864b39f9fce05_AKHQVRx.jpeg"
+#image_url = r"http://127.0.0.1:8000/media/files/6/a/6aba43be0fbabdd5712634e290ad6745_A44TbSa.jpg"
+#image_url1 = image_url[21:]
+#BASE_DIR = r"D:\work\classroom\django-vue-admin-main\backend"
+#BASE_DIR = BASE_DIR.replace("\\","/")
+#image_path = BASE_DIR + image_url1
+#print (BASE_DIR)
 #facenum = face_identify(image_url)
 #print (facenum)
 
