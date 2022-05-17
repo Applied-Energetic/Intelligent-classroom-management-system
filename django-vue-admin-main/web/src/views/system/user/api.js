@@ -3,9 +3,20 @@
  * @最后修改人: 夏妍
  * @文件介绍: 用户接口
  */
-import { request } from '@/api/service'
+import { request, downloadFile } from '@/api/service'
 
 export const urlPrefix = '/api/system/user/'
+
+/**
+ * 导出
+ * @param params
+ */
+export function exportData (params) {
+  return downloadFile({
+    url: urlPrefix + 'export/',
+    params: params
+  })
+}
 
 export function GetList (query) {
   return request({

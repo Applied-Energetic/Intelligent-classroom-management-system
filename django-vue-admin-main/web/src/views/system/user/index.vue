@@ -21,6 +21,13 @@
             @click="addRow"
             ><i class="el-icon-plus" /> 新增</el-button
           >
+          <el-button
+            size="small"
+            type="danger"
+            @click="onExport"
+          ><i class="el-icon-download"/> 导出
+          </el-button>
+          <importExcel importApi="/api/system/user/import/">导入</importExcel>
         </el-button-group>
         <crud-toolbar
           :search.sync="crud.searchOptions.show"
@@ -107,6 +114,16 @@ export default {
     },
     delRequest (row) {
       return api.DelObj(row.id)
+    },
+    // 导出确认
+    onExport () {
+      this.$confirm('是否确认导出所有数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function () {
+        return api.exportData()
+      })
     },
     // 重置密码弹框
     resetPwd ({ row }) {
