@@ -194,6 +194,6 @@ export const crudOptions = (vm) => {
           }
         }
       }
-    ].concat(vm.commonEndColumns({ update_datetime: { showForm: false, showTable: false }, create_datetime: { showForm: false, showTable: true } }))
+    ].concat(vm.commonEndColumns({ update_datetime: { showForm: false, showTable: true }, create_datetime: { showForm: false, showTable: true } }))
   }
 }

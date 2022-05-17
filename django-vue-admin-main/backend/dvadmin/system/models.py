@@ -139,7 +139,7 @@ class Book(CoreModel):
 class Student(CoreModel):
     name = models.CharField(max_length=64, unique=True, blank=False, verbose_name="课程名称", help_text="课程名称")
     avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=False, help_text="出勤照片")
-    number = models.IntegerField(default=7, verbose_name="出勤人数", help_text="出勤人数")
+    number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
 
     def set_number(self, number):
