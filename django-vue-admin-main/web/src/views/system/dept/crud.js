@@ -2,6 +2,8 @@ import { request } from '@/api/service'
 import { BUTTON_STATUS_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from './api'
 import XEUtils from 'xe-utils'
+import util from '@/libs/util'
+const uploadUrl = util.baseURL() + 'api/system/file/'
 export const crudOptions = (vm) => {
   return {
     pagination: false,
@@ -242,6 +244,82 @@ export const crudOptions = (vm) => {
             clearable: true
           },
           placeholder: '请输入该教室使用须知'
+        }
+      }
+    },
+    {
+      title: '流量照片',
+      key: 'avatar',
+      type: 'avatar-uploader',
+      width: 100,
+      align: 'left',
+      form: {
+        component: {
+          props: {
+            uploader: {
+              action: uploadUrl,
+              headers: {
+                Authorization: 'JWT ' + util.cookies.get('token')
+              },
+              type: 'form',
+              successHandle (ret, option) {
+                if (ret.data === null || ret.data === '') {
+                  throw new Error('上传失败')
+                }
+                return { url: util.baseURL() + ret.data.url, key: option.data.key }
+              }
+            },
+            elProps: { // 与el-uploader 配置一致
+              multiple: true,
+              limit: 5 // 限制5个文件
+            },
+            sizeLimit: 1024 * 1024 * 1024 * 1024 * 1024 // 不能超过限制
+          },
+          span: 24
+        },
+        helper: '请上传考勤图片'
+      },
+      valueResolve (row, col) {
+        const value = row[col.key]
+        if (value != null && value instanceof Array) {
+          if (value.length >= 0) {
+            row[col.key] = value[0]
+          } else {
+            row[col.key] = null
+          }
+        }
+      },
+      component: {
+        props: {
+          buildUrl (value, item) {
+            if (value && value.indexOf('http') !== 0) {
+              return util.baseURL() + value
+            }
+            return value
+          }
+        }
+      }
+    },
+    {
+      title: '当前人数',
+      key: 'number',
+      dict: {
+        cache: false,
+        url: deptPrefix,
+        value: 'id',
+        lable: 'number',
+        getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
+          return request({ url: url }).then(ret => {
+            const data = XEUtils(ret.data.data)
+            return data
+          })
+        }
+      },
+      form: {
+        disabled: true,
+        value: true,
+        component: {
+          span: 12
         }
       }
     },
