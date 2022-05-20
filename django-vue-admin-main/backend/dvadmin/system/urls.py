@@ -24,6 +24,7 @@ from dvadmin.system.views.system_config import SystemConfigViewSet
 from dvadmin.system.views.user import UserViewSet
 from dvadmin.system.views.book import BookViewSet
 from dvadmin.system.views.student import StudentViewSet
+from dvadmin.system.views.cbook import cBookViewSet
 
 system_url = routers.SimpleRouter()
 system_url.register(r'menu', MenuViewSet)
@@ -39,6 +40,7 @@ system_url.register(r'file', FileViewSet)
 system_url.register(r'api_white_list', ApiWhiteListViewSet)
 system_url.register(r'system_config', SystemConfigViewSet)
 system_url.register(r'book', BookViewSet)
+system_url.register(r'cbook', cBookViewSet)
 system_url.register(r'student', StudentViewSet)
 
 urlpatterns = [
