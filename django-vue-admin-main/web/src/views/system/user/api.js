@@ -14,6 +14,7 @@ export const urlPrefix = '/api/system/user/'
 export function exportData (params) {
   return downloadFile({
     url: urlPrefix + 'export/',
+    method: 'post',
     params: params
   })
 }
