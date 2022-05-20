@@ -12,6 +12,7 @@ from dvadmin.system.models import Dept
 from dvadmin.utils.json_response import SuccessResponse
 from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.viewset import CustomModelViewSet
+from dvadmin.utils.face_identification import face_identify
 
 
 class DeptSerializer(CustomModelSerializer):
@@ -33,6 +34,8 @@ class DeptCreateUpdateSerializer(CustomModelSerializer):
     def create(self, validated_data):
         instance = super().create(validated_data)
         instance.dept_belong_id = instance.id
+        number = face_identify(str(instance.avatar))
+        instance.set_number(number)
         instance.save()
         return instance
 

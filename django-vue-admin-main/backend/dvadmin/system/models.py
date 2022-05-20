@@ -106,6 +106,11 @@ class Dept(CoreModel):
     large = models.IntegerField(default=0, verbose_name="教室容量", null=True, blank=True, help_text="教室容量")
     parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="上级部门",
                                db_constraint=False, null=True, blank=True, help_text="上级部门")
+    avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=False, help_text="出勤照片")
+    number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
+
+    def set_number(self, number):
+        self.number = number
 
     class Meta:
         db_table = table_prefix + "system_dept"
