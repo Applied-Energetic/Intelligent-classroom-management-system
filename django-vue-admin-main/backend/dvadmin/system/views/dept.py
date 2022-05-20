@@ -17,7 +17,7 @@ from dvadmin.utils.face_identification import face_identify
 
 class DeptSerializer(CustomModelSerializer):
     """
-    部门-序列化器
+    教室-序列化器
     """
     parent_name = serializers.CharField(read_only=True,source='parent.name')
     class Meta:
@@ -25,10 +25,32 @@ class DeptSerializer(CustomModelSerializer):
         fields = "__all__"
         read_only_fields = ["id"]
 
-
-class DeptCreateUpdateSerializer(CustomModelSerializer):
+class ExportUserProfileSerializer(CustomModelSerializer):
     """
-    部门管理 创建/更新时的列化器
+    教室导出 序列化器
+    """
+
+    class Meta:
+        model = Dept
+        fields = ('name', 'large', 'avatar', 'number')
+
+class DeptProfileImportSerializer(CustomModelSerializer):
+    """
+    教室导入 序列化器
+    """
+
+    def save(self, **kwargs):
+        data = super().save(**kwargs)
+        data.save()
+        return data
+
+    class Meta:
+        model = Dept
+        exclude = ('name', 'large', 'avatar', 'number')
+
+class DeptCreateSerializer(CustomModelSerializer):
+    """
+    教室管理 创建/更新时的列化器
     """
 
     def create(self, validated_data):
@@ -43,7 +65,24 @@ class DeptCreateUpdateSerializer(CustomModelSerializer):
         model = Dept
         fields = '__all__'
 
+class DeptUpdateSerializer(CustomModelSerializer):
+    """
+    部门管理 更新时的列化器
+    """
 
+    def save(self, **kwargs):
+        data = super().save(**kwargs)
+        data.avatar.set(self.initial_data.get('avatar', []))
+        number = face_identify(str(self.initial_data.get('avatar','')))
+        data.set_number(number)
+        data.save()
+        return data
+
+    class Meta:
+        model = Dept
+        read_only_fields = ["id"]
+        fields = '__all__'
+        
 class DeptViewSet(CustomModelViewSet):
     """
     部门管理接口
@@ -55,8 +94,15 @@ class DeptViewSet(CustomModelViewSet):
     """
     queryset = Dept.objects.all()
     serializer_class = DeptSerializer
-    create_serializer_class = DeptCreateUpdateSerializer
-    update_serializer_class = DeptCreateUpdateSerializer
+    create_serializer_class = DeptCreateSerializer
+    update_serializer_class = DeptUpdateSerializer
+    # 导出
+    export_field_label = ['教室名称', '教室容量', '出勤照片', '出勤人数']
+    export_serializer_class = ExportUserProfileSerializer
+    #导入
+    import_serializer_class = DeptProfileImportSerializer
+    import_field_dict = {'name':'教室名称', 'large':'教室容量', 'avatar':'出勤照片', 'number':'出勤人数'}
+
     # extra_filter_backends = []
 
     # def list(self, request, *args, **kwargs):
