@@ -95,7 +95,7 @@ export const crudOptions = (vm) => {
         width: 220,
         valueBuilder (row, key) {
           console.log(row, key)
-          row.url = `${util.baseURL()}media/${row.url}`
+          row.url = `${util.baseURL()}${row.url}`
         }
       },
       {
