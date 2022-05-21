@@ -1,5 +1,5 @@
 import { request } from '@/api/service'
-import { BUTTON_cBOOK_BOOL,BUTTON_AUDIT_BOOL,BUTTON_ADMIN_BOOL } from '@/config/button'
+import { BUTTON_cBOOK_BOOL,BUTTON_ADMIN_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from '../dept/api'
 // import util from '@/libs/util'
 // import { Avatar } from 'node_modules/element-ui/types/element-ui'
@@ -189,7 +189,7 @@ export const crudOptions = (vm) => {
         width: 70,
         type: 'radio',
         dict: {
-          data: BUTTON_AUDIT_BOOL
+          data: BUTTON_cBOOK_BOOL
         },
         form: {
           value: true,

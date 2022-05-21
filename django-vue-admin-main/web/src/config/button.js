@@ -23,10 +23,9 @@ export function getButtonSettings (objectSettings) {
 // 启用 true/ 禁用 false
 export const BUTTON_STATUS_BOOL = getButtonSettings([{ label: '空闲', value: true }, { label: '使用中', value: false }])
 
-//export const BUTTON_BOOK_BOOL = getButtonSettings([{ label: '通过申请', value: true }, { label: '拒绝申请', value: false }])
 export const BUTTON_cBOOK_BOOL = getButtonSettings([{ label: '预订', value: true }, { label: '取消', value: false }])
 
-export const BUTTON_AUDIT_BOOL = getButtonSettings([{ label: '待审批', value: true }, { label: '已审批', value: false }])
+//export const BUTTON_AUDIT_BOOL = getButtonSettings([{ label: '待审批', value: true }, { label: '已审批', value: false }])
 export const BUTTON_ADMIN_BOOL = getButtonSettings([{ label: '拒绝', value: true }, { label: '同意', value: false }])
 
 // 启用 1/ 禁用 0
