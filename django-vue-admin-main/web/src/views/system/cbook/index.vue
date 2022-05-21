@@ -33,6 +33,8 @@
 import * as api from './api'
 import { crudOptions } from './crud'
 import { d2CrudPlus } from 'd2-crud-plus'
+import { D2pTreeSelector } from 'd2p-extends' // 组件支持懒加载
+
 export default {
   name: 'cbook',
   mixins: [d2CrudPlus.crud],

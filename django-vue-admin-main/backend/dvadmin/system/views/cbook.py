@@ -4,10 +4,24 @@
 @author: 尚善蒲
 @Remark: 教室预定
 """
+from rest_framework import serializers
+
 from dvadmin.system.models import cBook
+from dvadmin.system.views.dept import DeptSerializer
+from dvadmin.system.models import Dept
 from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.viewset import CustomModelViewSet
 
+
+class DeptSerializer(CustomModelSerializer):
+    """
+    教室-序列化器
+    """
+    parent_name = serializers.CharField(read_only=True,source='parent.name')
+    class Meta:
+        model = Dept
+        fields = "__all__"
+        read_only_fields = ["id"]
 
 class cBookSerializer(CustomModelSerializer):
     """
@@ -30,5 +44,6 @@ class cBookViewSet(CustomModelViewSet):
     destroy:删除
     """
     queryset = cBook.objects.all()
+    serializer_classroom_class = DeptSerializer
     serializer_class = cBookSerializer
     extra_filter_backends = []

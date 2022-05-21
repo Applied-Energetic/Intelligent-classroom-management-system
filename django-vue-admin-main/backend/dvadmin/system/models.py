@@ -153,8 +153,10 @@ class cBook(CoreModel):
     #end_time = models.TimeField(editable=True, blank=True, verbose_name="结束时间", help_text="结束时间")
     reason = models.CharField(max_length=256, blank=True, verbose_name="申请理由", help_text="申请理由")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
-    dept = models.ForeignKey(to='Dept', verbose_name='教室位置', on_delete=models.PROTECT, db_constraint=False, null=True,
-                             blank=True, help_text="教室位置")
+    # dept = models.ForeignKey(to='Dept', verbose_name='教室位置', on_delete=models.PROTECT, db_constraint=False, null=True,
+    #                          blank=True, help_text="教室位置")
+    parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="上级部门",
+                               db_constraint=False, null=True, blank=True, help_text="上级部门")
     role = models.ForeignKey(to='Role', verbose_name='角色', on_delete=models.PROTECT, db_constraint=False, null=True,
                              blank=True, help_text="角色")
 

@@ -1,5 +1,5 @@
 import { request } from '@/api/service'
-import { BUTTON_BOOK_BOOL,BUTTON_cBOOK_BOOL, BUTTON_ADMIN_BOOL } from '@/config/button'
+import { BUTTON_cBOOK_BOOL,BUTTON_AUDIT_BOOL,BUTTON_ADMIN_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from '../dept/api'
 // import util from '@/libs/util'
 // import { Avatar } from 'node_modules/element-ui/types/element-ui'
@@ -189,7 +189,7 @@ export const crudOptions = (vm) => {
         width: 70,
         type: 'radio',
         dict: {
-          data: BUTTON_BOOK_BOOL
+          data: BUTTON_AUDIT_BOOL
         },
         form: {
           value: true,
@@ -220,8 +220,26 @@ export const crudOptions = (vm) => {
         dict: {
           data: BUTTON_ADMIN_BOOL
         },
+        // form: {
+        //   disabled: true,
+        //   value: true,
+        //   component: {
+        //     span: 12
+        //   }
+        // }
+        // form: {
+        //   rules: [ // 表单校验规则
+        //     { required: false, message: '' }
+        //   ],
+        //   component: {
+        //     span: 12,
+        //     placeholder: '请输入姓名'
+        //   },
+        //   itemProps: {
+        //     class: { yxtInput: true }
+        //   }
+        // }
         form: {
-          disabled: true,
           value: true,
           component: {
             span: 12

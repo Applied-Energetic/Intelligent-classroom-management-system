@@ -4,7 +4,9 @@
 @author: 陈佳婧
 @Remark: 预订管理
 """
+#预定管理用于审批学生以及老师的审批，因此和cbook文件共用同一个数据库
 from dvadmin.system.models import Book
+from dvadmin.system.models import cBook
 from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.viewset import CustomModelViewSet
 
@@ -15,10 +17,19 @@ class BookSerializer(CustomModelSerializer):
     """
 
     class Meta:
-        model = Book
+        model = cBook
         fields = "__all__"
         read_only_fields = ["id"]
 
+class cBookSerializer(CustomModelSerializer):
+    """
+    预订-序列化器
+    """
+
+    class Meta:
+        model = cBook
+        fields = "__all__"
+        read_only_fields = ["id"]
 
 class BookViewSet(CustomModelViewSet):
     """
@@ -29,6 +40,6 @@ class BookViewSet(CustomModelViewSet):
     retrieve:单例
     destroy:删除
     """
-    queryset = Book.objects.all()
-    serializer_class = BookSerializer
+    queryset = cBook.objects.all()
+    serializer_class = cBookSerializer
     extra_filter_backends = []
