@@ -1,5 +1,5 @@
 import { request } from '@/api/service'
-import { BUTTON_BOOK_BOOL, BUTTON_ADMIN_BOOL } from '@/config/button'
+import { BUTTON_BOOK_BOOL,BUTTON_cBOOK_BOOL, BUTTON_ADMIN_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from '../dept/api'
 // import util from '@/libs/util'
 // import { Avatar } from 'node_modules/element-ui/types/element-ui'
