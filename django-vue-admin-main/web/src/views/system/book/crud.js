@@ -1,5 +1,5 @@
 import { request } from '@/api/service'
-import { BUTTON_CBOOK_BOOL, BUTTON_ADMIN_BOOL } from '@/config/button'
+import { BUTTON_CBOOK_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from '../dept/api'
 // import util from '@/libs/util'
 // import { Avatar } from 'node_modules/element-ui/types/element-ui'
@@ -135,10 +135,6 @@ export const crudOptions = (vm) => {
                   title: '教室名称'
                 },
                 {
-                  field: 'status_label',
-                  title: '状态'
-                },
-                {
                   field: 'parent_name',
                   title: '教室位置'
                 }
@@ -216,30 +212,18 @@ export const crudOptions = (vm) => {
       {
         title: '管理员审批',
         key: 'opinion',
-        width: 70,
-        type: 'radio',
-        dict: {
-          data: BUTTON_ADMIN_BOOL
+        search: {
+          disabled: true
         },
-        // form: {
-        //   disabled: true,
-        //   value: true,
-        //   component: {
-        //     span: 12
-        //   }
-        // }
-        // form: {
-        //   rules: [ // 表单校验规则
-        //     { required: false, message: '' }
-        //   ],
-        //   component: {
-        //     span: 12,
-        //     placeholder: '请输入姓名'
-        //   },
-        //   itemProps: {
-        //     class: { yxtInput: true }
-        //   }
-        // }
+        width: 70,
+        type: 'select',
+        dict: {
+          data: [
+            { value: '0', label: '待审批' },
+            { value: '1', label: '同意' },
+            { value: '2', label: '拒绝' }
+          ]
+        },
         form: {
           value: true,
           component: {

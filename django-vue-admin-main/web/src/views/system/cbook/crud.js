@@ -1,5 +1,5 @@
 import { request } from '@/api/service'
-import { BUTTON_CBOOK_BOOL, BUTTON_ADMIN_BOOL } from '@/config/button'
+import { BUTTON_CBOOK_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from '../dept/api'
 import XEUtils from 'xe-utils'
 // import util from '@/libs/util'
@@ -255,10 +255,17 @@ export const crudOptions = (vm) => {
       {
         title: '管理员审批',
         key: 'opinion',
+        search: {
+          disabled: true
+        },
         width: 70,
-        type: 'radio',
+        type: 'select',
         dict: {
-          data: BUTTON_ADMIN_BOOL
+          data: [
+            { value: '0', label: '待审批' },
+            { value: '1', label: '同意' },
+            { value: '2', label: '拒绝' }
+          ]
         },
         form: {
           disabled: true,
