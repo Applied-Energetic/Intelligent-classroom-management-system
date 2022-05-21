@@ -1,5 +1,5 @@
 import { request } from '@/api/service'
-import { BUTTON_BOOK_BOOL, BUTTON_AUDIT_BOOL,BUTTON_PASS_BOOL,BUTTON_cBOOK_BOOL,BUTTON_ADMIN_BOOL } from '@/config/button'
+import { BUTTON_CBOOK_BOOL, BUTTON_ADMIN_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from '../dept/api'
 import XEUtils from 'xe-utils'
 // import util from '@/libs/util'
@@ -158,7 +158,6 @@ export const crudOptions = (vm) => {
         dict: {
           cache: false,
           url: deptPrefix + '?limit=999&status=1',
-          
           isTree: true,
           value: 'id', // 数据字典中value字段的属性名
           label: 'name', // 数据字典中label字段的属性名
@@ -173,11 +172,10 @@ export const crudOptions = (vm) => {
         form: {
           component: {
             span: 12,
-  
             props: {
               elProps: {
                 clearable: true,
-                showAllLevels: true, 
+                showAllLevels: true,
                 props: {
                   checkStrictly: true, // 可以不需要选到最后一级
                   emitPath: false,
@@ -231,7 +229,7 @@ export const crudOptions = (vm) => {
         width: 70,
         type: 'radio',
         dict: {
-          data: BUTTON_AUDIT_BOOL
+          data: BUTTON_CBOOK_BOOL
         },
         form: {
           value: true,
