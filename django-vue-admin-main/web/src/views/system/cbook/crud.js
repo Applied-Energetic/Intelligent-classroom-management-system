@@ -232,6 +232,7 @@ export const crudOptions = (vm) => {
           data: BUTTON_CBOOK_BOOL
         },
         form: {
+          disabled: true,
           value: true,
           component: {
             span: 12
