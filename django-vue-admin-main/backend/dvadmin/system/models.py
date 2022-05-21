@@ -38,7 +38,7 @@ class Users(AbstractUser, CoreModel):
     role = models.ManyToManyField(to='Role', verbose_name='关联角色', db_constraint=False, help_text="关联角色")
     # 不需要对应教室
     dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True,
-                             blank=True, help_text="关联部门")
+                              blank=True, help_text="关联部门")
 
     def set_password(self, raw_password):
         super().set_password(hashlib.md5(raw_password.encode(encoding='UTF-8')).hexdigest())
@@ -106,7 +106,7 @@ class Dept(CoreModel):
     large = models.IntegerField(default=0, verbose_name="教室容量", null=True, blank=True, help_text="教室容量")
     parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="上级部门",
                                db_constraint=False, null=True, blank=True, help_text="上级部门")
-    avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=False, help_text="出勤照片")
+    avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
 
     def set_number(self, number):
