@@ -261,9 +261,6 @@ export const crudOptions = (vm) => {
         dict: {
           data: BUTTON_ADMIN_BOOL
         },
-        options:{
-          data: BUTTON_ADMIN_BOOL
-        },
         form: {
           disabled: true,
           value: true,
