@@ -84,14 +84,13 @@ class ExportUserProfileSerializer(CustomModelSerializer):
     用户导出 序列化器
     """
     last_login = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S", required=False, read_only=True)
-    dept__deptName = serializers.CharField(source='dept.deptName', default='')
-    dept__owner = serializers.CharField(source='dept.owner', default='')
+    # dept__deptName = serializers.CharField(source='dept.deptName', default='')
+    # dept__owner = serializers.CharField(source='dept.owner', default='')
     gender = serializers.CharField(source='get_gender_display', read_only=True)
 
     class Meta:
         model = Users
-        fields = ('username', 'name', 'email', 'mobile', 'gender', 'is_active', 'last_login', 'dept__deptName',
-                  'dept__owner')
+        fields = ('username', 'name', 'email', 'mobile', 'gender', 'is_active', 'last_login')
 
 
 class UserProfileImportSerializer(CustomModelSerializer):
@@ -141,13 +140,13 @@ class UserViewSet(CustomModelViewSet):
     # }
     search_fields = ['username', 'name', 'gender', 'dept__name', 'role__name']
     # 导出
-    export_field_label = ['用户账号', '用户名称', '用户邮箱', '手机号码', '用户性别', '帐号状态', '最后登录时间', '部门名称', '部门负责人']
+    export_field_label = ['用户账号', '用户名称', '用户邮箱', '手机号码', '用户性别', '帐号状态', '最后登录时间']
     export_serializer_class = ExportUserProfileSerializer
     # 导入
     import_serializer_class = UserProfileImportSerializer
     import_field_dict = {'username': '登录账号', 'name': '用户名称', 'email': '用户邮箱', 'mobile': '手机号码',
                          'gender': '用户性别(男/女/未知)',
-                         'is_active': '帐号状态(启用/禁用)', 'password': '登录密码', 'dept': '部门ID', 'role': '角色ID'}
+                         'is_active': '帐号状态(启用/禁用)', 'password': '登录密码', 'role': '角色ID'}
 
     @action(methods=['GET'], detail=True, permission_classes=[IsAuthenticated])
     def user_info(self, request):
