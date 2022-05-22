@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from dvadmin.utils.models import CoreModel, table_prefix
+from dvadmin.utils.face_identification import face_identify
 
 STATUS_CHOICES = (
     (0, "禁用"),
@@ -109,8 +110,12 @@ class Dept(CoreModel):
     avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
 
-    def set_number(self, number):
-        self.number = number
+    def set_number(self):
+        if self.avatar != None:
+            number = face_identify(self.avatar)
+            self.number = number
+        else:
+            self.number = 0
 
     class Meta:
         db_table = table_prefix + "system_dept"
@@ -173,8 +178,12 @@ class Student(CoreModel):
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
 
-    def set_number(self, number):
-        self.number = number
+    def set_number(self):
+        if self.avatar != None:
+            number = face_identify(self.avatar)
+            self.number = number
+        else:
+            self.number = 0
 
     class Meta:
         db_table = table_prefix + "system_student"
