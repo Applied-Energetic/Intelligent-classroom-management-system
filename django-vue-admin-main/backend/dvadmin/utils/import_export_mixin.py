@@ -58,7 +58,10 @@ class ImportSerializerMixin:
 
         updateSupport = request.data.get('updateSupport')
         # 从excel中组织对应的数据结构，然后使用序列化器保存
-        data = import_to_data(request.data.get('url'), self.import_field_dict)
+        url = request.data.get('url')
+        url = url[6:]
+        # data = import_to_data(request.data.get('url'), self.import_field_dict)
+        data = import_to_data(url, self.import_field_dict)
         queryset = self.filter_queryset(self.get_queryset())
         unique_list = [ele.attname for ele in queryset.model._meta.get_fields() if
                        hasattr(ele, 'unique') and ele.unique == True]

@@ -94,7 +94,9 @@ class ExportUserProfileSerializer(CustomModelSerializer):
 
 
 class UserProfileImportSerializer(CustomModelSerializer):
-
+    """
+    用户导入 序列化器
+    """
     def save(self, **kwargs):
         data = super().save(**kwargs)
         password = hashlib.new('md5', str(self.initial_data.get('password', '')).encode(encoding='UTF-8')).hexdigest()
@@ -113,7 +115,7 @@ class UserProfileImportSerializer(CustomModelSerializer):
 
     class Meta:
         model = Users
-        exclude = ('password', 'post', 'user_permissions', 'groups', 'is_superuser', 'date_joined')
+        exclude = ('password', 'post', 'user_permissions', 'groups', 'is_superuser', 'date_joined', 'dept')
 
 
 class UserViewSet(CustomModelViewSet):
