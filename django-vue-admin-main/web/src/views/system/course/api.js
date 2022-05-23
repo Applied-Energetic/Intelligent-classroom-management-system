@@ -3,7 +3,7 @@
  * @文件介绍: 选课管理
  */
 import { request, downloadFile } from '@/api/service'
-export const urlPrefix = '/api/system/class/'
+export const urlPrefix = '/api/system/course/'
 /**
  * 导出
  * @param params

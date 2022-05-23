@@ -153,7 +153,7 @@ class cBook(CoreModel):
     email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
     need = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
     #opinion = models.BooleanField(default=True, verbose_name="管理员审批", null=True, blank=True, help_text="管理员审批")
-    opinion = models.IntegerField(default='待审批', verbose_name="管理员审批", help_text="管理员审批")
+    opinion = models.IntegerField(default=0, verbose_name="管理员审批", help_text="管理员审批")
     #begin_date = models.DateField(editable=True, blank=True, verbose_name="预订日期", help_text="预订日期")
     #begin_time = models.TimeField(editable=True, blank=True, verbose_name="预订时间", help_text="预订时间")
     #end_time = models.TimeField(editable=True, blank=True, verbose_name="结束时间", help_text="结束时间")
