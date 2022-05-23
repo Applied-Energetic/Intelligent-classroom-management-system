@@ -33,10 +33,10 @@ class StudentCreateSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
-        number = face_identify(str(self.initial_data.get('avatar','')))
+        # number = face_identify(str(self.initial_data.get('avatar','')))
         # data.post.set(self.initial_data.get('post', []))
         # self.initial_data['number'] = number
-        data.set_number(number)
+        data.set_number()
         data.save()
         return data
 
