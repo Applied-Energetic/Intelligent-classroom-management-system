@@ -37,6 +37,7 @@ class Users(AbstractUser, CoreModel):
                                     help_text="用户类型")
     post = models.ManyToManyField(to='Post', verbose_name='关联岗位', db_constraint=False, help_text="关联岗位")
     role = models.ManyToManyField(to='Role', verbose_name='关联角色', db_constraint=False, help_text="关联角色")
+    is_active = models.BooleanField(default=True, verbose_name="用户状态", null=True, blank=True, help_text="用户状态")
     # 不需要对应教室
     dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True,
                               blank=True, help_text="关联部门")
