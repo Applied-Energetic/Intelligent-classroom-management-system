@@ -60,6 +60,8 @@ urlpatterns = [
     path('login_log/', LoginLogViewSet.as_view({'get': 'list'})),
     path('login_log/<int:pk>/', LoginLogViewSet.as_view({'get': 'retrieve'})),
     path('dept/export/',DeptViewSet.as_view({'post': 'export_data', })),
-    path('dept/import/', DeptViewSet.as_view({'get': 'import_data', 'post': 'import_data'}))
+    path('dept/import/', DeptViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
+    path('course/export/',CourseViewSet.as_view({'post': 'export_data', })),
+    path('course/import/', CourseViewSet.as_view({'get': 'import_data', 'post': 'import_data'}))
 ]
 urlpatterns += system_url.urls

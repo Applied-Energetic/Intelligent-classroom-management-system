@@ -66,6 +66,8 @@ class CourseViewSet(CustomModelViewSet):
     """
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
+    create_serializer_class = CourseCreateUpdateSerializer
+    update_serializer_class = CourseCreateUpdateSerializer
     extra_filter_backends = []
     # 导出
     export_field_label = ['姓名', '学生照片', '邮箱', '课程名称']
