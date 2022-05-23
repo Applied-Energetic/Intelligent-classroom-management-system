@@ -106,7 +106,7 @@ class UserProfileImportSerializer(CustomModelSerializer):
         # 把excel 数据进行格式转换
         if type(data) is dict:
             data['role'] = str(data['role']).split(',')
-            data['dept_id'] = str(data['dept']).split(',')
+            #data['dept_id'] = str(data['dept']).split(',')
             data['gender'] = {'男': '1', '女': '0', '未知': '2'}.get(data['gender'])
             data['is_active'] = {'启用': True, '禁用': False}.get(data['is_active'])
         return super().run_validation(data)
