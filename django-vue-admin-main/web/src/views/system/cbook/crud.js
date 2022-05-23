@@ -276,6 +276,25 @@ export const crudOptions = (vm) => {
           }
         }
       }
+      /*
+      {
+        title: '申请时间',
+        key: 'begin_date',
+        minWidth: 160,
+        type: 'date',
+        form: {
+          component: {
+            name: 'el-date-picker'
+          }
+        },
+        component: {
+          name: 'date-format',
+          props: {
+            format: 'YYYY-MM-DD',
+            valueFormat: 'yyyy-MM-dd'
+          }
+        }
+      } */
     ].concat(vm.commonEndColumns({ update_datetime: { showForm: false, showTable: false }, create_datetime: { showForm: false, showTable: true } }))
   }
 }
