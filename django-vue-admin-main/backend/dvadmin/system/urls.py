@@ -25,6 +25,7 @@ from dvadmin.system.views.user import UserViewSet
 from dvadmin.system.views.book import BookViewSet
 from dvadmin.system.views.student import StudentViewSet
 from dvadmin.system.views.cbook import cBookViewSet
+from dvadmin.system.views.course import CourseViewSet
 
 system_url = routers.SimpleRouter()
 system_url.register(r'menu', MenuViewSet)
@@ -42,6 +43,7 @@ system_url.register(r'system_config', SystemConfigViewSet)
 system_url.register(r'book', BookViewSet)
 system_url.register(r'cbook', cBookViewSet)
 system_url.register(r'student', StudentViewSet)
+system_url.register(r'course', CourseViewSet)
 
 urlpatterns = [
     path('role/roleId_get_menu/<int:pk>/', RoleViewSet.as_view({'get': 'roleId_get_menu'})),
