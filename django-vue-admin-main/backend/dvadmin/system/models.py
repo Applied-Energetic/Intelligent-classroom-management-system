@@ -122,6 +122,7 @@ class Dept(CoreModel):
         verbose_name = '部门表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
+
 # 新增类预订
 class Book(CoreModel):
     booker = models.CharField(max_length=40, blank=True, verbose_name="姓名", help_text="姓名")
@@ -145,6 +146,7 @@ class Book(CoreModel):
         verbose_name = '预定表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
+
 # 新增类教室预订
 class cBook(CoreModel):
     booker = models.CharField(max_length=40, blank=True, verbose_name="姓名", help_text="姓名")
@@ -171,10 +173,11 @@ class cBook(CoreModel):
         verbose_name = '教室预定表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
+
 # 新增类出勤
 class Student(CoreModel):
-    name = models.CharField(max_length=64, unique=True, blank=False, verbose_name="课程名称", help_text="课程名称")
-    avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=False, help_text="出勤照片")
+    name = models.CharField(max_length=64, blank=False, verbose_name="课程名称", help_text="课程名称")
+    avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
 
@@ -188,6 +191,20 @@ class Student(CoreModel):
     class Meta:
         db_table = table_prefix + "system_student"
         verbose_name = '出勤表'
+        verbose_name_plural = verbose_name
+        ordering = ('sort',)
+
+#新增类选课
+class Course(CoreModel):
+    name = models.CharField(max_length=64, blank=False, verbose_name="姓名", help_text="姓名")
+    avatar = models.CharField(max_length=255, verbose_name="学生照片", null=True, blank=True, help_text="学生照片")
+    email = models.EmailField(max_length=255, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
+    cname = models.CharField(max_length=64, blank=True, verbose_name="课程名称", help_text="课程名称")
+    sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
+
+    class Meta:
+        db_table = table_prefix + "system_course"
+        verbose_name = '选课表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
 

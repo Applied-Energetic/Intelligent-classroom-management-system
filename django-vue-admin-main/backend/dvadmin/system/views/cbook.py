@@ -8,7 +8,6 @@ from rest_framework import serializers
 
 from dvadmin.system.models import cBook
 from dvadmin.system.views.dept import DeptSerializer
-from dvadmin.system.models import Dept
 from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.viewset import CustomModelViewSet
 

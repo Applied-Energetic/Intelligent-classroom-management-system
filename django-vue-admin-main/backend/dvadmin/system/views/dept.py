@@ -50,7 +50,7 @@ class DeptProfileImportSerializer(CustomModelSerializer):
 
 class DeptCreateSerializer(CustomModelSerializer):
     """
-    教室管理 创建/更新时的列化器
+    教室管理 创建时的列化器
     """
 
     def create(self, validated_data):

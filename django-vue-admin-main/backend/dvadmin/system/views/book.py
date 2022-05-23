@@ -9,27 +9,8 @@ from dvadmin.system.models import Book
 from dvadmin.system.models import cBook
 from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.viewset import CustomModelViewSet
+from dvadmin.system.views.cbook import cBookSerializer
 
-
-class BookSerializer(CustomModelSerializer):
-    """
-    预订-序列化器
-    """
-
-    class Meta:
-        model = cBook
-        fields = "__all__"
-        read_only_fields = ["id"]
-
-class cBookSerializer(CustomModelSerializer):
-    """
-    预订-序列化器
-    """
-
-    class Meta:
-        model = cBook
-        fields = "__all__"
-        read_only_fields = ["id"]
 
 class BookViewSet(CustomModelViewSet):
     """
