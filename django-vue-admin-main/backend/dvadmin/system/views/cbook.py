@@ -13,16 +13,6 @@ from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.viewset import CustomModelViewSet
 
 
-class DeptSerializer(CustomModelSerializer):
-    """
-    教室-序列化器
-    """
-    parent_name = serializers.CharField(read_only=True,source='parent.name')
-    class Meta:
-        model = Dept
-        fields = "__all__"
-        read_only_fields = ["id"]
-
 class cBookSerializer(CustomModelSerializer):
     """
     预订-序列化器
