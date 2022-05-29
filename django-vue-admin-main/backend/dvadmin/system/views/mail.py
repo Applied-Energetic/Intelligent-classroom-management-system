@@ -4,6 +4,8 @@
 @Created on: 2022/5/29 
 @Remark: 发送邮件功能
 """
+#参考https://www.w3cschool.cn/article/17223331.html
+
 from django.core.mail import send_mail
 from application import settings
 from django.shortcuts import HttpResponse
