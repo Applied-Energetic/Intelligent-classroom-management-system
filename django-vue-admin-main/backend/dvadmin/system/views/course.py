@@ -24,7 +24,26 @@ class CourseSerializer(CustomModelSerializer):
         fields = "__all__"
         read_only_fields = ["id"]
 
-class CourseCreateUpdateSerializer(CustomModelSerializer):
+class CourseCreateSerializer(CustomModelSerializer):
+    """
+    选课新增-序列化器
+    """
+
+    def save(self, **kwargs):
+        data = super().save(**kwargs)
+        data.regist()
+        data.save()
+        return data
+
+    class Meta:
+        model = Course
+        fields = "__all__"
+        read_only_fields = ["id"]
+        extra_kwargs = {
+            'post': {'required': False},
+        }
+
+class CourseUpdateSerializer(CustomModelSerializer):
     """
     选课管理 创建/更新时的列化器
     """
@@ -66,8 +85,8 @@ class CourseViewSet(CustomModelViewSet):
     """
     queryset = Course.objects.all()
     serializer_class = CourseSerializer
-    create_serializer_class = CourseCreateUpdateSerializer
-    update_serializer_class = CourseCreateUpdateSerializer
+    create_serializer_class = CourseCreateSerializer
+    update_serializer_class = CourseUpdateSerializer
     extra_filter_backends = []
     # 导出
     export_field_label = ['姓名', '学生照片', '邮箱', '课程名称']

@@ -6,8 +6,10 @@ from zipfile import LargeZipFile
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
+
 from dvadmin.utils.models import CoreModel, table_prefix
 from dvadmin.utils.face_identification import face_identify
+from dvadmin.utils.face_identification2 import registeredIdentity
 
 STATUS_CHOICES = (
     (0, "禁用"),
@@ -202,6 +204,9 @@ class Course(CoreModel):
     email = models.EmailField(max_length=255, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
     cname = models.CharField(max_length=64, blank=True, verbose_name="课程名称", help_text="课程名称")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
+
+    def regist(self):
+        registeredIdentity(self.avatar, self.name)
 
     class Meta:
         db_table = table_prefix + "system_course"

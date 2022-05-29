@@ -16,6 +16,7 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR 得到的地址为当前目录到backend为止，且为\\形式，最后backend停
 
 # ================================================= #
 # ******************** 动态配置 ******************** #
