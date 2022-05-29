@@ -69,6 +69,7 @@ def compare_faces(x, y, Threshold):
 
 
 def registeredIdentity(image_url, name):
+	global known_face_encodings, known_face_names
 	image_url1 = image_url[21:]
 	BASE_DIR = str(settings.BASE_DIR)
 	BASE_DIR = BASE_DIR.replace("\\","/")
@@ -80,6 +81,7 @@ def registeredIdentity(image_url, name):
 	known_face_encodings.append(face_encoding)
 	known_face_names.append(name)
 	print ('complete register')
+	print (known_face_names)
 	
 
 '''
