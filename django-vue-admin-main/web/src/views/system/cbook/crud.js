@@ -2,10 +2,6 @@ import { request } from '@/api/service'
 import { BUTTON_CBOOK_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from '../dept/api'
 import XEUtils from 'xe-utils'
-// import util from '@/libs/util'
-// import { Avatar } from 'node_modules/element-ui/types/element-ui'
-
-// const uploadUrl = util.baseURL() + 'api/system/file/'
 export const crudOptions = (vm) => {
   return {
     pageOptions: {
@@ -232,7 +228,6 @@ export const crudOptions = (vm) => {
           data: BUTTON_CBOOK_BOOL
         },
         form: {
-          disabled: true,
           value: true,
           component: {
             span: 12
@@ -275,26 +270,47 @@ export const crudOptions = (vm) => {
             span: 12
           }
         }
-      }
-      /*
+      },
       {
-        title: '申请时间',
+        title: '预约时间',
         key: 'begin_date',
-        minWidth: 160,
-        type: 'date',
+        sortable: true,
+        type: 'datetime',
         form: {
           component: {
-            name: 'el-date-picker'
-          }
-        },
-        component: {
-          name: 'date-format',
-          props: {
-            format: 'YYYY-MM-DD',
-            valueFormat: 'yyyy-MM-dd'
+            span: 24,
+            props: {
+              clearable: true,
+              format: 'yyyy-MM-dd HH:mm:ss',
+              valueFormat: 'yyyy-MM-dd HH:mm:ss'
+            },
+            placeholder: '请输入预约时间'
+          },
+          itemProps: {
+            class: { yxtInput: true }
           }
         }
-      } */
+      },
+      {
+        title: '结束时间',
+        key: 'end_time',
+        sortable: true,
+        type: 'datetime',
+        form: {
+          component: {
+            span: 24,
+            props: {
+              clearable: true,
+              format: 'yyyy-MM-dd HH:mm:ss',
+              valueFormat: 'yyyy-MM-dd HH:mm:ss'
+            },
+            placeholder: '请输入结束时间'
+          },
+          itemProps: {
+            class: { yxtInput: true }
+          }
+        }
+      }
     ].concat(vm.commonEndColumns({ update_datetime: { showForm: false, showTable: false }, create_datetime: { showForm: false, showTable: true } }))
   }
 }

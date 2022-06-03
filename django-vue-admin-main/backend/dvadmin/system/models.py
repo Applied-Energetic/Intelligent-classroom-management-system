@@ -109,6 +109,7 @@ class Dept(CoreModel):
     message = models.CharField(max_length=32, verbose_name="使用须知", null=True, blank=True, help_text="使用须知")
     status = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
     large = models.IntegerField(default=0, verbose_name="教室容量", null=True, blank=True, help_text="教室容量")
+    uses = models.IntegerField(default=0, verbose_name="使用情况", help_text="使用情况")
     parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="上级部门",
                                db_constraint=False, null=True, blank=True, help_text="上级部门")
     avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
@@ -120,7 +121,6 @@ class Dept(CoreModel):
             self.number = number
         else:
             self.number = 0
-
     class Meta:
         db_table = table_prefix + "system_dept"
         verbose_name = '部门表'
@@ -135,9 +135,9 @@ class Book(CoreModel):
     email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
     need = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
     opinion = models.IntegerField(default='0', verbose_name="管理员审批", help_text="管理员审批")
-    #begin_date = models.DateField(editable=True, blank=True, verbose_name="预订日期", help_text="预订日期")
+    begin_date = models.DateTimeField(editable=True, blank=True, verbose_name="预订日期", help_text="预订日期")
     #begin_time = models.TimeField(editable=True, blank=True, verbose_name="预订时间", help_text="预订时间")
-    #end_time = models.TimeField(editable=True, blank=True, verbose_name="结束时间", help_text="结束时间")
+    end_time = models.DateTimeField(editable=True, blank=True, verbose_name="结束时间", help_text="结束时间")
     reason = models.CharField(max_length=256, blank=True, verbose_name="申请理由", help_text="申请理由")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
     dept = models.ForeignKey(to='Dept', verbose_name='教室位置', on_delete=models.PROTECT, db_constraint=False, null=True,
@@ -160,9 +160,9 @@ class cBook(CoreModel):
     need = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
     #opinion = models.BooleanField(default=True, verbose_name="管理员审批", null=True, blank=True, help_text="管理员审批")
     opinion = models.IntegerField(default=0, verbose_name="管理员审批", help_text="管理员审批")
-    #begin_date = models.DateField(editable=True, blank=True, verbose_name="预订日期", help_text="预订日期")
+    begin_date = models.DateTimeField(editable=True, blank=True, verbose_name="预订日期", help_text="预订日期")
     #begin_time = models.TimeField(editable=True, blank=True, verbose_name="预订时间", help_text="预订时间")
-    #end_time = models.TimeField(editable=True, blank=True, verbose_name="结束时间", help_text="结束时间")
+    end_time = models.DateTimeField(editable=True, blank=True, verbose_name="结束时间", help_text="结束时间")
     reason = models.CharField(max_length=256, blank=True, verbose_name="申请理由", help_text="申请理由")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
     # dept = models.ForeignKey(to='Dept', verbose_name='教室位置', on_delete=models.PROTECT, db_constraint=False, null=True,
