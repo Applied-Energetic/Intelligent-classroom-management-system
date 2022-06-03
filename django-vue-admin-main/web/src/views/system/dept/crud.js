@@ -375,7 +375,6 @@ export const crudOptions = (vm) => {
       },
       form: {
         disabled: true,
-        value: true,
         component: {
           span: 12
         }
