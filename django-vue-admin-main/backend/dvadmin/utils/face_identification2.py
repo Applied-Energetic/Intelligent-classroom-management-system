@@ -5,14 +5,12 @@
 @Remark: 人脸识别
 @inset: 陈佳婧
 """
+import os
 import numpy as np
 import cv2
 import face_recognition
 from django.conf import settings
 
-# 	1）known_face_encodings：人脸库特征向量
-#	2）known_face_names：人脸库名字标签
-known_face_encodings, known_face_names = [], []
 # Threshold = 0.65 # 人脸置信度阈值
 
 '''
@@ -51,12 +49,44 @@ def compare_faces(x, y, Threshold):
 	for fet in x:
 		sim = simcos(fet, y)
 		ressim.append(sim)
+	print(ressim)
 	print(max(ressim))
 	if max(ressim) > Threshold:  # 置信度阈值
 		match[ressim.index(max(ressim))] = True
 	print('complete compare')
 	return match, max(ressim)
 
+
+def initialize_npy(path):
+	'''
+	# 列表npy文件初始换
+	'''
+	# 判断是否存在，不存在就创建，并初始化
+	if not os.path.exists(path):
+		# 保存
+		known_face_file = []
+		known_face_file = np.array(known_face_file)
+		np.save(path, known_face_file)
+
+
+def known_face_save(path, new_info):
+	# 先存储特征向量
+	# 读取原有列表
+	known_face_file = np.load(path, allow_pickle=True)
+	known_face_file = known_face_file.tolist()
+	# 改变列表
+	known_face_file.append(new_info)
+	# 重新储存npy文件
+	known_face_file = np.array(known_face_file)
+	np.save(path, known_face_file)
+
+
+def img_adress(image_url):
+	# 处理图片地址
+	image_url1 = image_url[21:]
+	BASE_DIR = str(settings.BASE_DIR).replace("\\","/")
+	image_path = BASE_DIR + image_url1
+	return image_path
 
 '''
 注册身份
@@ -68,20 +98,34 @@ def compare_faces(x, y, Threshold):
 '''
 
 
-def registeredIdentity(image_url, name):
-	global known_face_encodings, known_face_names
-	image_url1 = image_url[21:]
-	BASE_DIR = str(settings.BASE_DIR)
-	BASE_DIR = BASE_DIR.replace("\\","/")
-	image_path = BASE_DIR + image_url1
+def registeredIdentity(image_url, name, course):
+	'''
+	先运行一遍 初始化npy文件 不用写进程序里
+	
+	'''
+	image_path = img_adress(image_url)
 	image = face_recognition.load_image_file(image_path)
+	# 读出照片
 	face_locations = face_recognition.face_locations(image)
+	# 得到特征向量
 	face_encoding = face_recognition.face_encodings(image, face_locations)[0]
 	# face_encoding = face_recognition.face_encodings(image, face_locations)
-	known_face_encodings.append(face_encoding)
-	known_face_names.append(name)
+	# 写入对应课程文件
+	# 路径及文件名
+	known_face_path = str(settings.BASE_DIR).replace("\\","/") + '/identity/known_face/'
+	course_encodings = 'known_face_encodings_' + course + '.npy'
+	course_names = 'known_face_names_' + course + '.npy'
+	# 得到文件最终的路径
+	path_encodings = known_face_path + course_encodings
+	path_names = known_face_path + course_names
+	# 初始化
+	initialize_npy(path_encodings)
+	initialize_npy(path_names)
+	# 存储
+	known_face_save(path_encodings, face_encoding)
+	known_face_save(path_names, name)
+	
 	print ('complete register')
-	print (known_face_names)
 	
 
 '''
@@ -96,11 +140,22 @@ def registeredIdentity(image_url, name):
 '''
 
 
-def identityRecognition(testimg, known_face_encodings, known_face_names, Threshold):
+def identityRecognition(testimg, course, Threshold):
+	##########
+	# 地址
+	known_face_path = str(settings.BASE_DIR).replace("\\","/") + '/identity/known_face/'
+	course_encodings = known_face_path + 'known_face_encodings_' + course + '.npy'
+	course_names = known_face_path + 'known_face_names_' + course + '.npy'
+	# 读取列表
+	known_face_encodings = np.load(course_encodings, allow_pickle=True)
+	known_face_encodings = known_face_encodings.tolist()
+	known_face_names = np.load(course_names, allow_pickle=True)
+	known_face_names = known_face_names.tolist()
+	############
 	face_locations = face_recognition.face_locations(testimg)
 	# face_locations = face_recognition.face_locations(testimg, model="cnn")
 	face_encodings = face_recognition.face_encodings(testimg, face_locations)
-	print(face_encodings)
+	# print(face_encodings)
 	faceNum = len(face_locations)
 	name_list, score_list = [], []
 	retname, retscore = "Noface", 0
@@ -175,18 +230,24 @@ def statistic_name(faceNum, name_original, name_list):
 '''
 
 
-def pic(imagepath, libpath, save_dir, name_original, Threshold=0.68):
+def pic(image_url, course, name_list, Threshold=0.68):
+	BASE_DIR = str(settings.BASE_DIR)
+	BASE_DIR = BASE_DIR.replace("\\","/")
+	image_url1 = image_url[21:]
+	imagepath = BASE_DIR + image_url1
+	save_dir = BASE_DIR + '/identity/' + course + '.jpg'
+	# 测试完记得改
+	name_original = name_list
+	print ("课程名单：", name_list)
 	image_original = cv2.imread(imagepath)
-	known_face_encodings, known_face_names = registeredIdentity(libpath)
-	name_list, score_list, face_locations, faceNum = identityRecognition(image_original, known_face_encodings, known_face_names, Threshold=Threshold)
+	name_list, score_list, face_locations, faceNum = identityRecognition(image_original, course, Threshold=Threshold)
 
 	image = name_show(image_original, face_locations, name_list, score_list)
 	statistic_name(faceNum, name_original, name_list)
 
 	cv2.imwrite(save_dir, image)
-	cv2.imshow('img', image)
-	cv2.waitKey(0)
 
+	return faceNum
 
 # if __name__ == '__main__':
 #	name_list = ['ROSE','JISOO','LISA','JENNIE']

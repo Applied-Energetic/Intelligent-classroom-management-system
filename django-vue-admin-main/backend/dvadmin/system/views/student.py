@@ -9,6 +9,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
 
 from dvadmin.system.models import Student
+from dvadmin.system.models import Course
 from dvadmin.system.views.file_list import FileSerializer
 from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.viewset import CustomModelViewSet
@@ -36,7 +37,7 @@ class StudentCreateSerializer(CustomModelSerializer):
         # number = face_identify(str(self.initial_data.get('avatar','')))
         # data.post.set(self.initial_data.get('post', []))
         # self.initial_data['number'] = number
-        data.set_number()
+        data.identifity()
         data.save()
         return data
 
@@ -47,6 +48,23 @@ class StudentCreateSerializer(CustomModelSerializer):
         extra_kwargs = {
             'post': {'required': False},
         }
+
+
+class StudentUpdateSerializer(CustomModelSerializer):
+    """
+    出勤管理 更新时的列化器
+    """
+
+    def save(self, **kwargs):
+        data = super().save(**kwargs)
+        data.identifity()
+        data.save()
+        return data
+
+    class Meta:
+        model = Student
+        read_only_fields = ["id"]
+        fields = '__all__'
 
 
 class StudentViewSet(CustomModelViewSet):
@@ -61,6 +79,7 @@ class StudentViewSet(CustomModelViewSet):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     create_serializer_class = StudentCreateSerializer
+    update_serializer_class = StudentUpdateSerializer
     extra_filter_backends = []
 
     # @action(methods=['POST'], detail=True, permission_classes=[IsAuthenticated])

@@ -9,6 +9,7 @@ from django.db import models
 
 from dvadmin.utils.models import CoreModel, table_prefix
 from dvadmin.utils.face_identification import face_identify
+from dvadmin.utils.face_identification2 import pic
 from dvadmin.utils.face_identification2 import registeredIdentity
 
 STATUS_CHOICES = (
@@ -184,9 +185,10 @@ class Student(CoreModel):
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
 
-    def set_number(self):
+    def identifity(self):
         if self.avatar != None:
-            number = face_identify(self.avatar)
+            name_list = list(Course.objects.filter(cname__exact=self.name).values_list('name', flat=True))
+            number = pic(self.avatar, self.name, name_list)
             self.number = number
         else:
             self.number = 0
@@ -206,7 +208,7 @@ class Course(CoreModel):
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
 
     def regist(self):
-        registeredIdentity(self.avatar, self.name)
+        registeredIdentity(self.avatar, self.name, self.cname)
 
     class Meta:
         db_table = table_prefix + "system_course"

@@ -43,10 +43,16 @@ class CourseCreateSerializer(CustomModelSerializer):
             'post': {'required': False},
         }
 
-class CourseUpdateSerializer(CustomModelSerializer):
+class UpdateSerializer(CustomModelSerializer):
     """
-    选课管理 创建/更新时的列化器
+    选课管理 更新时的列化器
     """
+    def save(self, **kwargs):
+        data = super().save(**kwargs)
+        # data.regist()
+        # 暂时还是bug，更新没法把特征替换到已知的文件中
+        data.save()
+        return data
 
     class Meta:
         model = Course
