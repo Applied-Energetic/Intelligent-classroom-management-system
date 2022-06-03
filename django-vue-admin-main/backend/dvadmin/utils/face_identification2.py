@@ -214,7 +214,7 @@ def name_show(img, face_locations, name_list, score_list):
 '''
 
 
-def statistic_name(faceNum, name_original, absence_list):
+def statistic_name(faceNum, name_list, absence_list):
 	print("到课人数：", faceNum)
 	print("到课名单：", name_list)
 	print("缺课名单：", absence_list)
@@ -244,7 +244,7 @@ def pic(image_url, course, name_list, Threshold=0.68):
 
 	image = name_show(image_original, face_locations, name_list, score_list)
 	absence_list = set(name_original)-set(name_list)
-	statistic_name(faceNum, name_original, absence_list)
+	statistic_name(faceNum, name_list, absence_list)
 	
 	cv2.imwrite(save_dir, image)
 
