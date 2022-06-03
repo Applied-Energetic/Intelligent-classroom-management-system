@@ -324,6 +324,30 @@ export const crudOptions = (vm) => {
       }
     },
     {
+      title: '使用情况',
+      key: 'uses',
+      sortable: false,
+      dict: {
+        cache: false,
+        url: deptPrefix,
+        value: 'id',
+        lable: 'uses',
+        getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
+          return request({ url: url }).then(ret => {
+            const data = XEUtils(ret.data.data)
+            return data
+          })
+        }
+      },
+      form: {
+        disabled: true,
+        value: true,
+        component: {
+          span: 12
+        }
+      }
+    },
+    {
       title: '排序',
       key: 'sort',
       sortable: true,
@@ -354,29 +378,6 @@ export const crudOptions = (vm) => {
         component: {
           span: 12,
           placeholder: '请选择状态'
-        }
-      }
-    },
-    {
-      title: '使用情况',
-      key: 'uses',
-      sortable: false,
-      dict: {
-        cache: false,
-        url: deptPrefix,
-        value: 'id',
-        lable: 'uses',
-        getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
-          return request({ url: url }).then(ret => {
-            const data = XEUtils(ret.data.data)
-            return data
-          })
-        }
-      },
-      form: {
-        disabled: true,
-        component: {
-          span: 12
         }
       }
     }
