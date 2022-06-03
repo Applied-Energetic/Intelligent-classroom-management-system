@@ -43,7 +43,7 @@ class CourseCreateSerializer(CustomModelSerializer):
             'post': {'required': False},
         }
 
-class UpdateSerializer(CustomModelSerializer):
+class CourseUpdateSerializer(CustomModelSerializer):
     """
     选课管理 更新时的列化器
     """
