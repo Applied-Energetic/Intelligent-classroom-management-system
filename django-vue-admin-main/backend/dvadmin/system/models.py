@@ -109,7 +109,7 @@ class Dept(CoreModel):
     message = models.CharField(max_length=32, verbose_name="使用须知", null=True, blank=True, help_text="使用须知")
     status = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
     large = models.IntegerField(default=0, verbose_name="教室容量", null=True, blank=True, help_text="教室容量")
-    uses = models.IntegerField(default=0, verbose_name="使用情况", help_text="使用情况")
+    uses = models.CharField(max_length=16, default="0.00%", verbose_name="使用情况", help_text="使用情况")
     parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="上级部门",
                                db_constraint=False, null=True, blank=True, help_text="上级部门")
     avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
