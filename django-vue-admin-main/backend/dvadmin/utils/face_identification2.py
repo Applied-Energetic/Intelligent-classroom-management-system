@@ -230,15 +230,15 @@ def statistic_name(faceNum, name_list, absence_list):
 '''
 
 
-def pic(image_url, course, name_list, Threshold=0.68):
+def pic(image_url, course, name_original, Threshold=0.68):
 	BASE_DIR = str(settings.BASE_DIR)
 	BASE_DIR = BASE_DIR.replace("\\","/")
 	image_url1 = image_url[21:]
 	imagepath = BASE_DIR + image_url1
 	save_dir = BASE_DIR + '/identity/' + course + '.jpg'
 	# 测试完记得改
-	name_original = name_list
-	print ("课程名单：", name_list)
+	name_original = name_original
+	print ("课程名单：", name_original)
 	image_original = cv2.imread(imagepath)
 	name_list, score_list, face_locations, faceNum = identityRecognition(image_original, course, Threshold=Threshold)
 
