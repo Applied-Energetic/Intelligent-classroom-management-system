@@ -115,12 +115,14 @@ class Dept(CoreModel):
     avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
 
-    def set_number(self):
+    def set_number_uses(self):
         if self.avatar != None:
-            number = face_identify(self.avatar)
-            self.number = number
+            self.number = face_identify(self.avatar)
+            if self.large != 0:
+                self.uses =  '{:.2%}'.format(self.number/self.large)
         else:
             self.number = 0
+
     class Meta:
         db_table = table_prefix + "system_dept"
         verbose_name = '部门表'
