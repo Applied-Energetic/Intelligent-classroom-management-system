@@ -49,8 +49,7 @@ class UpdateSerializer(CustomModelSerializer):
     """
     def save(self, **kwargs):
         data = super().save(**kwargs)
-        # data.regist()
-        # 暂时还是bug，更新没法把特征替换到已知的文件中
+        data.regist()
         data.save()
         return data
 
