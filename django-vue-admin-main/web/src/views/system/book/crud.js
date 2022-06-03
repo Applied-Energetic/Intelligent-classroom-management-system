@@ -1,10 +1,7 @@
 import { request } from '@/api/service'
 import { BUTTON_CBOOK_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from '../dept/api'
-// import util from '@/libs/util'
-// import { Avatar } from 'node_modules/element-ui/types/element-ui'
-
-// const uploadUrl = util.baseURL() + 'api/system/file/'
+import XEUtils from 'xe-utils'
 export const crudOptions = (vm) => {
   return {
     pageOptions: {
@@ -100,45 +97,39 @@ export const crudOptions = (vm) => {
       },
       {
         title: '教室位置',
-        key: 'dept',
+        key: 'parent',
+        show: true,
         search: {
-          disabled: true
+          disabled: false
         },
-        minWidth: 140,
-        type: 'table-selector',
+        type: 'cascader',
         dict: {
           cache: false,
-          url: deptPrefix,
+          url: deptPrefix + '?limit=999&status=1',
+          isTree: true,
           value: 'id', // 数据字典中value字段的属性名
           label: 'name', // 数据字典中label字段的属性名
-          getData: (url, dict, { form, component }) => {
-            return request({ url: url, params: { page: 1, limit: 10, status: 1 } }).then(ret => {
-              component._elProps.page = ret.data.page
-              component._elProps.limit = ret.data.limit
-              component._elProps.total = ret.data.total
-              return ret.data.data
+          children: 'children', // 数据字典中children字段的属性名
+          getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
+            return request({ url: url }).then(ret => {
+              const data = XEUtils.toArrayTree(ret.data.data, { parentKey: 'parent', strict: true })
+              return [{ id: '0', name: '根节点', children: data }]
             })
           }
         },
         form: {
-          itemProps: {
-            class: { yxtInput: true }
-          },
           component: {
             span: 12,
-            props: { multiple: false },
-            elProps: {
-              pagination: true,
-              columns: [
-                {
-                  field: 'name',
-                  title: '教室名称'
-                },
-                {
-                  field: 'parent_name',
-                  title: '教室位置'
+            props: {
+              elProps: {
+                clearable: true,
+                showAllLevels: true,
+                props: {
+                  checkStrictly: true, // 可以不需要选到最后一级
+                  emitPath: false,
+                  clearable: true
                 }
-              ]
+              }
             }
           }
         }
@@ -228,6 +219,46 @@ export const crudOptions = (vm) => {
           value: true,
           component: {
             span: 12
+          }
+        }
+      },
+      {
+        title: '预约时间',
+        key: 'begin_date',
+        sortable: true,
+        type: 'datetime',
+        form: {
+          component: {
+            span: 24,
+            props: {
+              clearable: true,
+              format: 'yyyy-MM-dd HH:mm:ss',
+              valueFormat: 'yyyy-MM-dd HH:mm:ss'
+            },
+            placeholder: '请输入预约时间'
+          },
+          itemProps: {
+            class: { yxtInput: true }
+          }
+        }
+      },
+      {
+        title: '结束时间',
+        key: 'end_time',
+        sortable: true,
+        type: 'datetime',
+        form: {
+          component: {
+            span: 24,
+            props: {
+              clearable: true,
+              format: 'yyyy-MM-dd HH:mm:ss',
+              valueFormat: 'yyyy-MM-dd HH:mm:ss'
+            },
+            placeholder: '请输入结束时间'
+          },
+          itemProps: {
+            class: { yxtInput: true }
           }
         }
       }
