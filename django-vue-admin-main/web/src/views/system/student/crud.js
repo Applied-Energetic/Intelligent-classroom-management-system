@@ -167,6 +167,29 @@ export const crudOptions = (vm) => {
         }
       },
       {
+        title: '缺勤名单',
+        key: 'absence',
+        dict: {
+          cache: false,
+          url: studentPrefix,
+          value: 'id',
+          lable: 'absence',
+          getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
+            return request({ url: url }).then(ret => {
+              const data = XEUtils(ret.data.data)
+              return data
+            })
+          }
+        },
+        form: {
+          disabled: true,
+          value: true,
+          component: {
+            span: 12
+          }
+        }
+      },
+      {
         title: '课程名称',
         key: 'name',
         sortable: true,
