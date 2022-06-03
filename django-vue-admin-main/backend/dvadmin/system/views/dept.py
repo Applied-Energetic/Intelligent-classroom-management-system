@@ -56,8 +56,7 @@ class DeptCreateSerializer(CustomModelSerializer):
     def create(self, validated_data):
         instance = super().create(validated_data)
         instance.dept_belong_id = instance.id
-        if instance.avatar != None:
-            instance.set_number()
+        instance.set_number_uses()
         instance.save()
         return instance
 
@@ -72,7 +71,7 @@ class DeptUpdateSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
-        data.set_number()
+        data.set_number_uses()
         data.save()
         return data
 
