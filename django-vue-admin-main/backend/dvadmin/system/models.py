@@ -184,12 +184,13 @@ class Student(CoreModel):
     avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
+    absence = models.CharField(max_length=255, verbose_name="缺勤名单", null=True, blank=True, help_text="缺勤名单")
 
     def identifity(self):
         if self.avatar != None:
             name_list = list(Course.objects.filter(cname__exact=self.name).values_list('name', flat=True))
-            number = pic(self.avatar, self.name, name_list)
-            self.number = number
+            self.number, self.absence = pic(self.avatar, self.name, name_list)
+            
         else:
             self.number = 0
 
