@@ -1,6 +1,5 @@
 /*
- * @Auther: 猿小天
- * @最后修改人: 夏妍
+ * @Auther: 夏妍
  * @文件介绍: 用户接口
  */
 import { request, downloadFile } from '@/api/service'

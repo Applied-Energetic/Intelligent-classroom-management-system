@@ -1,7 +1,7 @@
 /*
  * @Auther: 尚善蒲
  * @文件介绍: 教室预约
- * @inset：夏妍
+ * @最后修改人：夏妍
  */
 import { request } from '@/api/service'
 

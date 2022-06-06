@@ -1,21 +1,22 @@
 /*
  * @Auther: 夏妍
- * @文件介绍: 角色管理接口
+ * @文件介绍: 排课管理
  */
 import { request } from '@/api/service'
-
-export const urlPrefix = '/api/system/role/'
-
+export const urlPrefix = '/api/system/schedule/'
+/**
+ * 列表查询
+ */
 export function GetList (query) {
   return request({
     url: urlPrefix,
     method: 'get',
     params: query
-  }).then(res => {
-    return res.data.data
   })
 }
-
+/**
+ * 新增
+ */
 export function createObj (obj) {
   return request({
     url: urlPrefix,
@@ -24,6 +25,9 @@ export function createObj (obj) {
   })
 }
 
+/**
+ * 修改
+ */
 export function UpdateObj (obj) {
   return request({
     url: urlPrefix + obj.id + '/',
@@ -31,23 +35,13 @@ export function UpdateObj (obj) {
     data: obj
   })
 }
-
+/**
+ * 删除
+ */
 export function DelObj (id) {
   return request({
     url: urlPrefix + id + '/',
     method: 'delete',
     data: { id }
-  })
-}
-
-// 通过角色id,获取菜单数据
-export function GetMenuData (obj) {
-  return request({
-    url: '/api/system/role/roleId_get_menu/' + obj.id + '/',
-    method: 'get',
-    params: {}
-  }).then(res => {
-    // 将列表数据转换为树形数据
-    return res.data.data
   })
 }

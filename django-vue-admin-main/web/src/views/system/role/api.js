@@ -1,6 +1,5 @@
 /*
- * @Auther: 猿小天
- * @最后修改人: 夏妍
+ * @Auther: 夏妍
  * @文件介绍: 角色管理接口
  */
 import { request } from '@/api/service'
