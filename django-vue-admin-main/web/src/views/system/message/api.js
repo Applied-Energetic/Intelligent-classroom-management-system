@@ -1,9 +1,20 @@
 /*
  * @Auther: 夏妍
- * @文件介绍: 班级课表
+ * @文件介绍: 信息管理
  */
-import { request } from '@/api/service'
-export const urlPrefix = '/api/system/schedule/'
+import { request, downloadFile } from '@/api/service'
+export const urlPrefix = '/api/system/message/'
+/**
+ * 导出
+ * @param params
+ */
+export function exportData (params) {
+  return downloadFile({
+    url: urlPrefix + 'export/',
+    method: 'post',
+    params: params
+  })
+}
 /**
  * 列表查询
  */
