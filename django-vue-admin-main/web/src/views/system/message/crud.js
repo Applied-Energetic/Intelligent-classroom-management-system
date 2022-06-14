@@ -107,6 +107,19 @@ export const crudOptions = (vm) => {
         }
       },
       {
+        title: '任课教师',
+        key: 'teacher',
+        sortable: true,
+        form: {
+          component: {
+            span: 12,
+            props: {
+              clearable: true
+            }
+          }
+        }
+      },
+      {
         title: '上课次数',
         key: 'num',
         sortable: true,
