@@ -3,6 +3,7 @@ import hashlib
 import os
 from urllib.parse import uses_fragment
 from zipfile import LargeZipFile
+import numpy as np
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -139,9 +140,9 @@ class Book(CoreModel):
     email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
     need = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
     opinion = models.IntegerField(default='0', verbose_name="管理员审批", help_text="管理员审批")
-    begin_date = models.DateTimeField(editable=True, blank=True, verbose_name="预订日期", help_text="预订日期")
+    begin_date = models.DateTimeField(editable=True, blank=True, null=True, verbose_name="预订日期", help_text="预订日期")
     #begin_time = models.TimeField(editable=True, blank=True, verbose_name="预订时间", help_text="预订时间")
-    end_time = models.DateTimeField(editable=True, blank=True, verbose_name="结束时间", help_text="结束时间")
+    end_time = models.DateTimeField(editable=True, blank=True, null=True, verbose_name="结束时间", help_text="结束时间")
     reason = models.CharField(max_length=256, blank=True, verbose_name="申请理由", help_text="申请理由")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
     dept = models.ForeignKey(to='Dept', verbose_name='教室位置', on_delete=models.PROTECT, db_constraint=False, null=True,
@@ -164,9 +165,9 @@ class cBook(CoreModel):
     need = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
     #opinion = models.BooleanField(default=True, verbose_name="管理员审批", null=True, blank=True, help_text="管理员审批")
     opinion = models.IntegerField(default=0, verbose_name="管理员审批", help_text="管理员审批")
-    begin_date = models.DateTimeField(editable=True, blank=True, verbose_name="预订日期", help_text="预订日期")
+    begin_date = models.DateTimeField(editable=True, blank=True, null=True, verbose_name="预订日期", help_text="预订日期")
     #begin_time = models.TimeField(editable=True, blank=True, verbose_name="预订时间", help_text="预订时间")
-    end_time = models.DateTimeField(editable=True, blank=True, verbose_name="结束时间", help_text="结束时间")
+    end_time = models.DateTimeField(editable=True, blank=True, null=True, verbose_name="结束时间", help_text="结束时间")
     reason = models.CharField(max_length=256, blank=True, verbose_name="申请理由", help_text="申请理由")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
     # dept = models.ForeignKey(to='Dept', verbose_name='教室位置', on_delete=models.PROTECT, db_constraint=False, null=True,
@@ -218,6 +219,50 @@ class Course(CoreModel):
     class Meta:
         db_table = table_prefix + "system_course"
         verbose_name = '选课表'
+        verbose_name_plural = verbose_name
+        ordering = ('sort',)
+
+
+#新增类信息（排课）
+class Message(CoreModel):
+    name = models.CharField(max_length=64, blank=False, verbose_name="课程名", help_text="课程名")
+    cclass = models.CharField(max_length=255, null=True, blank=True,verbose_name="上课班级", help_text="上课班级")
+    teacher = models.CharField(max_length=64, blank=True, verbose_name="任课教师", help_text="任课教师")
+    num = models.IntegerField(default=0, blank=True, verbose_name="上课次数", help_text="上课次数")
+    roomID = models.IntegerField(null=True, blank=True, verbose_name="教室ID", help_text="教室ID")
+    weekDay = models.IntegerField(null=True, blank=True, verbose_name="星期", help_text="星期")
+    slot = models.IntegerField(null=True, blank=True, verbose_name="时间", help_text="时间")
+    sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
+    
+    def set(self):
+        """random init.
+        返回随机整型
+        numpy.random.randint(low, high=None, size=None, dtype='l')
+        Arguments:
+            roomSize: int, number of classrooms.
+        """
+        # roomRange = Dept.objects.exclude(large=0).aggregate(Count("id"))
+        # large 更改完成后，上条注释改为执行语句
+        # roomID默认值改为np.random.randint(1, roomRange + 1, 1)[0]
+        self.roomId = np.random.randint(1, 6, 1)[0]
+        self.weekDay = np.random.randint(1, 6, 1)[0]
+        self.slot = np.random.randint(1, 6, 1)[0]
+
+    class Meta:
+        db_table = table_prefix + "system_Message"
+        verbose_name = '信息表'
+        verbose_name_plural = verbose_name
+        ordering = ('sort',)
+
+#新增类课表管理
+class Schedule(CoreModel):
+    name = models.CharField(max_length=64, blank=False, verbose_name="班级名称", help_text="班级名称")
+    image = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")    
+    sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
+
+    class Meta:
+        db_table = table_prefix + "system_Schedule"
+        verbose_name = '课表表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
 
