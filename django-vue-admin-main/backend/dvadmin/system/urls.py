@@ -63,13 +63,13 @@ urlpatterns = [
     path('system_config/get_relation_info/', SystemConfigViewSet.as_view({'get': 'get_relation_info'})),
     path('login_log/', LoginLogViewSet.as_view({'get': 'list'})),
     path('login_log/<int:pk>/', LoginLogViewSet.as_view({'get': 'retrieve'})),
-    path('dept/export/',DeptViewSet.as_view({'post': 'export_data', })),
+    path('dept/export/', DeptViewSet.as_view({'post': 'export_data', })),
     path('dept/import/', DeptViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
-    path('course/export/',CourseViewSet.as_view({'post': 'export_data', })),
+    path('course/export/', CourseViewSet.as_view({'post': 'export_data', })),
     path('course/import/', CourseViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
-    path('message/export/',CourseViewSet.as_view({'post': 'export_data', })),
-    path('message/import/', CourseViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
-    path('schedule/export/',CourseViewSet.as_view({'post': 'export_data', })),
-    path('schedule/import/', CourseViewSet.as_view({'get': 'import_data', 'post': 'import_data'}))
+    path('message/export/', MessageViewSet.as_view({'post': 'export_data', })),
+    path('message/import/', MessageViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
+    path('schedule/export/', ScheduleViewSet.as_view({'post': 'export_data', })),
+    path('schedule/import/', ScheduleViewSet.as_view({'get': 'import_data', 'post': 'import_data'}))
 ]
 urlpatterns += system_url.urls
