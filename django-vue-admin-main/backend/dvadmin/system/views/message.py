@@ -79,6 +79,7 @@ class MessageProfileImportSerializer(CustomModelSerializer):
 
     class Meta:
         model = Message
+        fields = '__all__'
 
 class MessageViewSet(CustomModelViewSet):
     """
