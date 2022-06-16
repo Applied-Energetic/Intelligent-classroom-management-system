@@ -30,6 +30,7 @@ class ScheduleCreateSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set()
         data.save()
         return data
 
@@ -47,6 +48,7 @@ class ScheduleUpdateSerializer(CustomModelSerializer):
     """
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set()
         data.save()
         return data
 

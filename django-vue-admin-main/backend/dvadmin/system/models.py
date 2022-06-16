@@ -260,6 +260,9 @@ class Schedule(CoreModel):
     image = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")    
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
 
+    def set(self):
+        self.image = 'http://127.0.0.1:8000/media/class' + self.name + '.jpg'
+
     class Meta:
         db_table = table_prefix + "system_Schedule"
         verbose_name = '课表表'

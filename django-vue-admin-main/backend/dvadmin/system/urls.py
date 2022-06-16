@@ -26,6 +26,8 @@ from dvadmin.system.views.book import BookViewSet
 from dvadmin.system.views.student import StudentViewSet
 from dvadmin.system.views.cbook import cBookViewSet
 from dvadmin.system.views.course import CourseViewSet
+from dvadmin.system.views.message import MessageViewSet
+from dvadmin.system.views.schedule import ScheduleViewSet
 
 system_url = routers.SimpleRouter()
 system_url.register(r'menu', MenuViewSet)
@@ -44,6 +46,8 @@ system_url.register(r'book', BookViewSet)
 system_url.register(r'cbook', cBookViewSet)
 system_url.register(r'student', StudentViewSet)
 system_url.register(r'course', CourseViewSet)
+system_url.register(r'message', CourseViewSet)
+system_url.register(r'schedule', CourseViewSet)
 
 urlpatterns = [
     path('role/roleId_get_menu/<int:pk>/', RoleViewSet.as_view({'get': 'roleId_get_menu'})),
@@ -62,6 +66,10 @@ urlpatterns = [
     path('dept/export/',DeptViewSet.as_view({'post': 'export_data', })),
     path('dept/import/', DeptViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
     path('course/export/',CourseViewSet.as_view({'post': 'export_data', })),
-    path('course/import/', CourseViewSet.as_view({'get': 'import_data', 'post': 'import_data'}))
+    path('course/import/', CourseViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
+    path('message/export/',CourseViewSet.as_view({'post': 'export_data', })),
+    path('message/import/', CourseViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
+    path('schedule/export/',CourseViewSet.as_view({'post': 'export_data', })),
+    path('schedule/import/', CourseViewSet.as_view({'get': 'import_data', 'post': 'import_data'}))
 ]
 urlpatterns += system_url.urls
