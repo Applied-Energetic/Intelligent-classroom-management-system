@@ -1,5 +1,4 @@
 import { request } from '@/api/service'
-import { urlPrefix as messagePrefix } from '../message/api'
 import { urlPrefix as schedulePrefix } from './api'
 import XEUtils from 'xe-utils'
 export const crudOptions = (vm) => {
@@ -80,47 +79,25 @@ export const crudOptions = (vm) => {
         }
       },
       {
+        title: '上课班级',
+        key: 'cclass',
+        sortable: true,
+        form: {
+          component: {
+            span: 12,
+            props: {
+              clearable: true
+            }
+          }
+        }
+      },
+      {
         title: 'ID',
         key: 'id',
         width: 90,
         disabled: true,
         form: {
           disabled: true
-        }
-      },
-      {
-        title: '班级名称',
-        key: 'cclass',
-        show: true,
-        search: {
-          disabled: false
-        },
-        type: 'select',
-        dict: {
-          cache: false,
-          url: messagePrefix + '?limit=999&status=1',
-          isTree: true,
-          value: 'id', // 数据字典中value字段的属性名
-          label: 'cclass', // 数据字典中label字段的属性名
-          getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
-            return request({ url: url }).then(ret => {
-              const data = XEUtils.toArrayTree(ret.data.data)
-              return data
-            })
-          }
-        },
-        form: {
-          component: {
-            span: 12,
-            props: {
-              elProps: {
-                clearable: true,
-                props: {
-                  clearable: true
-                }
-              }
-            }
-          }
         }
       },
       {
