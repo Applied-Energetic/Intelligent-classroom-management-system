@@ -80,7 +80,7 @@ export const crudOptions = (vm) => {
       },
       {
         title: '上课班级',
-        key: 'cclass',
+        key: 'name',
         sortable: true,
         form: {
           component: {
