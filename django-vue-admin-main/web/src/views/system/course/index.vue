@@ -22,7 +22,7 @@
             @click="onExport"
           ><i class="el-icon-download"/> 导出
           </el-button>
-          <importExcel importApi="/api/system/user/import/">导入</importExcel>
+          <importExcel importApi="/api/system/course/import/">导入</importExcel>
         </el-button-group>
         <crud-toolbar
           :search.sync="crud.searchOptions.show"
