@@ -12,6 +12,7 @@ from dvadmin.system.models import Message
 from dvadmin.system.views.file_list import FileSerializer
 from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.viewset import CustomModelViewSet
+from dvadmin.utils.schedule import scheduling
 
 class MessageSerializer(CustomModelSerializer):
     """
@@ -32,6 +33,7 @@ class MessageCreateSerializer(CustomModelSerializer):
         data = super().save(**kwargs)
         data.set()
         data.save()
+        scheduling(data.name, data.cclass, data.teacher, data.num)
         return data
 
     class Meta:

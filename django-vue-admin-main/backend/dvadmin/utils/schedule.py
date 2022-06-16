@@ -15,9 +15,6 @@ import numpy as np
 import prettytable
 import xlrd
 from PIL import Image, ImageFont, ImageDraw
-from schedule import Schedule
-from genetic import GeneticOptimize
-from schedule import schedule_cost
 
 
 # ----------------------------------------- #
@@ -290,6 +287,10 @@ def vis(res, room, savedir, name, choice):
     draw.multiline_text((space, space), table_info, fill=(255, 255, 255), font=font)
     # 生成图片
     im_new.save(savedir)
+    # 由于目前只使用课表图片，所以暂时不做分类
+    sche = Schedule.objects.get(name = name)
+    sche.image = 'http://127.0.0.1:8000/media/class' + name + '.jpg'
+    sche.save()
     del draw
 
 
