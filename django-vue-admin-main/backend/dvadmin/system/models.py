@@ -244,7 +244,7 @@ class Message(CoreModel):
         # roomRange = Dept.objects.exclude(large=0).aggregate(Count("id"))
         # large 更改完成后，上条注释改为执行语句
         # roomID默认值改为np.random.randint(1, roomRange + 1, 1)[0]
-        self.roomId = np.random.randint(1, 6, 1)[0]
+        self.roomID = np.random.randint(1, 6, 1)[0]
         self.weekDay = np.random.randint(1, 6, 1)[0]
         self.slot = np.random.randint(1, 6, 1)[0]
 

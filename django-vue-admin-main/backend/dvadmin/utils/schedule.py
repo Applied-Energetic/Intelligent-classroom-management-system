@@ -5,12 +5,18 @@
 @Remark: 人脸识别
 @inset: 陈佳婧
 """
-
+import os
 from dvadmin.system.models import Message
+from dvadmin.system.models import Schedule
+from django.conf import settings
 
 import copy
 import numpy as np
-
+import prettytable
+import xlrd
+from PIL import Image, ImageFont, ImageDraw
+from schedule import Schedule
+from genetic import GeneticOptimize
 from schedule import schedule_cost
 
 
@@ -163,18 +169,98 @@ class GeneticOptimize:
 
 # ----------------------------------------- #
 
-def vis(schedule, room):
-    """visualization Class Schedule.
 
-    Arguments:
-        schedule: List, Class Schedule
-    """
+'''
+从表格读取课程信息
+输入：
+    1）filepath：要导入的表格地址
+'''
+
+
+def readFrom_xlsx(filepath):
+    # 打开文件
+    file_xlsx = xlrd.open_workbook(filepath, encoding_override="utf-8")
+    # 获取所有sheet表
+    all_sheet = file_xlsx.sheets()
+    # 获取第一张表
+    sheet1 = all_sheet[0]
+    # 获取表的行数 课程的数量
+    sheet1_rows = sheet1.nrows
+
+    npyadress = str(settings.BASE_DIR).replace("\\","/") + '/media/class/schedules.npy'
+    # 读取原有列表
+    schedules = np.load(npyadress, allow_pickle=True)
+    schedules = schedules.tolist()
+
+    for i in range(1, sheet1_rows):
+        course_name = sheet1.row_values(i)[0]
+        class_name = sheet1.row_values(i)[1]
+        teacher_name = sheet1.row_values(i)[2]
+        lesson_per_week = sheet1.row_values(i)[3]
+        for t in range(1, int(lesson_per_week)):
+            schedules.append(Schedule(course_name, class_name, teacher_name))
+
+    # 存储npy
+    schedules = np.array(schedules)
+    np.save('schedules.npy', schedules)
+
+
+'''
+直接新建课程信息
+输入：
+    course_name：
+    class_name：
+    teacher_name：
+    lesson_per_week：
+'''
+
+
+def create_course(course_name, class_name, teacher_name, lesson_per_week):
+    # 读取原有列表
+    schedules = np.load('schedules.npy', allow_pickle=True)
+    schedules = schedules.tolist()
+
+    # 改变列表
+    for t in range(1, int(lesson_per_week)):
+        schedules.append(Schedule(course_name, class_name, teacher_name))
+    # 重新储存npy文件
+    schedules = np.array(schedules)
+    np.save('schedules.npy', schedules)
+
+
+'''
+课程排课可视化
+输入：
+    schedule：所有课程
+    room：教室名称
+    savedir：课表保存地址
+'''
+
+
+def vis(res, room, savedir, name, choice):
+    vis_res = []
+    if (choice == 'room'):
+        roomindex = room.index(name)
+        for r in res:
+            if r.roomId == (roomindex + 1):
+                vis_res.append(r)
+    elif (choice == 'class'):
+        for r in res:
+            classR = r.classId.split(',')
+            for i in classR:
+                if(i == name):
+                    vis_res.append(r)
+    elif(choice == 'teacher'):
+        for r in res:
+            if (r.teacherId == name):
+                vis_res.append(r)
+
     col_labels = ['课程/星期', '1', '2', '3', '4', '5']
     table_vals = [[i + 1, '', '', '', '', ''] for i in range(6)]
 
     table = prettytable.PrettyTable(col_labels, hrules=prettytable.ALL)
 
-    for s in schedule:
+    for s in vis_res:
         weekDay = s.weekDay
         slot = s.slot
         text = '课程: {} \n 上课班级: {} \n 教室: {} \n 任课教师: {}'.format(s.courseId, s.classId, str(room[s.roomId-1]), s.teacherId)
@@ -184,14 +270,71 @@ def vis(schedule, room):
         table.add_row(row)
 
     print(table)
+    table_info = str(table)
+    space = 10
+
+    # PIL模块中，确定写入到图片中的文本字体
+    font = ImageFont.truetype('C:/Windows/Fonts/simsun.ttc', 20, encoding='utf-8')
+    # Image模块创建一个图片对象
+    im = Image.new('RGB', (10, 10), (0, 0, 0, 0))
+    # ImageDraw向图片中进行操作，写入文字或者插入线条都可以
+    draw = ImageDraw.Draw(im, "RGB")
+    # 根据插入图片中的文字内容和字体信息，来确定图片的最终大小
+    img_size = draw.multiline_textsize(table_info, font=font)
+    # 图片初始化的大小为10-10，现在根据图片内容要重新设置图片的大小
+    im_new = im.resize((img_size[0]+space*2, img_size[1]+space*2))
+    del draw
+    del im
+    draw = ImageDraw.Draw(im_new, 'RGB')
+    # 批量写入到图片中，这里的multiline_text会自动识别换行符
+    draw.multiline_text((space, space), table_info, fill=(255, 255, 255), font=font)
+    # 生成图片
+    im_new.save(savedir)
+    del draw
 
 
-def schedule():
+def schedule_init(npypath):
     schedules = []
+    # 储存npy文件
+    schedules = np.array(schedules)
+    np.save(npypath, schedules)
+    # 读取数据库数据
+    course_list = list(Message.objects.values_list('name', flat=True))
+    class_list = list(Message.objects.values_list('cclass', flat=True))
+    teacher_list = list(Message.objects.values_list('teacher', flat=True))
+    lesson_times =list(Message.objects.values_list('num', flat=True))
+    # 初始化课程信息
+    for i in range(len(course_list)):
+        course_name = course_list[i]
+        class_name = class_list[i]
+        teacher_name = teacher_list[i]
+        lesson_per_week = lesson_times[i]
+        create_course(course_name, class_name, teacher_name, lesson_per_week)
 
-    # add schedule
-    filepath = 'D:/work/大三下/软工课设/crsArrange/course1.xls'
-    readFrom_xlsx(filepath, schedules)
+
+def scheduling(course_name, class_name, teacher_name, lesson_per_week):
+    # 存储地址
+    adress = str(settings.BASE_DIR).replace("\\","/") + '/media/class/'
+    npypath = adress + 'schedules.npy'
+    # 判断是否存在，不存在就创建，并初始化
+    if not os.path.exists(npypath):
+        schedule_init(npypath)
+        class_list = list(Schedule.objects.values_list('cclass', flat=True))
+    else:
+        class_list = list(class_name.split())    
+
+    # 测试用例
+    # course_name = '编译原理'
+    # class_name = '计2,计4,计1,计3'
+    # teacher_name = '班晓娟'
+    # lesson_per_week = 2
+    create_course(course_name, class_name, teacher_name, lesson_per_week)
+
+# ---------------------以上输入课程信息--------------------------- #
+# ---------------------以下通过遗传算法排课----------------------- #
+    # 读取原有列表
+    schedules = np.load(npypath, allow_pickle=True)
+    schedules = schedules.tolist()
 
     # optimization
     ga = GeneticOptimize(popsize=50, elite=10, maxiter=500)
@@ -204,18 +347,28 @@ def schedule():
     res = ga.evolution(schedules, roomNum)
 
     # 打印班级课表
-    vis_res = []
-    for r in res:
-        classR = r.classId.split(',')
-        for i in classR:
-            if(i == '计1'):
-                vis_res.append(r)
-    vis(vis_res, room)
+    for name in class_list:
+        savedir = adress + name + '.jpg'
+        choice = 'class'
+        vis(res, room, savedir, name, choice)
+        
+    
+    # 以下为示例
+    # 打印班级课表
+    # # 设置图片的保存路径
+    # savedir = '计1.jpg'
+    # name = '计1'
+    # choice = 'class'
+    # vis(res, room, savedir, name, choice)
 
-    # 打印教室课表（教室需要是索引号）
-    vis_res = []
-    roomindex = room.index('逸夫楼101')
-    for r in res:
-        if r.roomId == (roomindex + 1):
-            vis_res.append(r)
-    vis(vis_res, room)
+    # # 打印教室课表（教室需要是索引号）
+    # savedir = '逸夫楼101.jpg'
+    # name = '逸夫楼101'
+    # choice = 'room'
+    # vis(res, room, savedir, name, choice)
+
+    # # 打印教师课表
+    # savedir = 'teacher.jpg'
+    # name = '何杰'
+    # choice = 'teacher'
+    # vis(res, room, savedir, name, choice)
