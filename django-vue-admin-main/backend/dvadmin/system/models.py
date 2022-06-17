@@ -14,6 +14,7 @@ from dvadmin.utils.models import CoreModel, table_prefix
 from dvadmin.utils.face_identification import face_identify
 from dvadmin.utils.face_identification2 import pic
 from dvadmin.utils.face_identification2 import registeredIdentity
+from dvadmin.utils.mail import send_email_demo
 
 STATUS_CHOICES = (
     (0, "禁用"),
@@ -194,8 +195,14 @@ class Student(CoreModel):
     def identifity(self):
         if self.avatar != None:
             name_list = list(Course.objects.filter(cname__exact=self.name).values_list('name', flat=True))
-            self.number, self.absence = pic(self.avatar, self.name, name_list)
-            
+            self.number, self.absence, absence_list = pic(self.avatar, self.name, name_list)
+            # 发送邮件
+            for absent in absence_list:
+                print("absent:", absent)
+                email = list(Course.objects.filter(name__exact = absent).values_list('email', flat=True))
+                print("email:", email)
+                if email != [''] and email != [None]:
+                    send_email_demo(email, self.name, absent)
         else:
             self.number = 0
 

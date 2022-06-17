@@ -410,6 +410,9 @@ def scheduling(course_name, class_name, teacher_name, lesson_per_week):
     # 判断是否存在，不存在就创建，并初始化
     if not os.path.exists(npypath):
         schedule_init(npypath) 
+    else:   # 由于不考虑更新，每次导入都将进行文件初始化
+        os.remove(npypath)
+        schedule_init(npypath) 
 
     # 测试用例
     # course_name = '编译原理' 

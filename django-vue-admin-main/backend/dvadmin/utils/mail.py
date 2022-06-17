@@ -12,17 +12,23 @@ from django.shortcuts import HttpResponse
 from django.core.mail import send_mail
 #传入接收者的列表即可
 #recipient_list: 一个字符串列表，每项都是一个邮箱地址。
-def send_email_demo(target):
-    from_who = settings.EMAIL_FROM  
+def send_email_demo(target, course, student):
+    # from_who = settings.EMAIL_FROM  
+    from_who = settings.EMAIL_HOST_USER
     #发件人  已写在 配置中 可直接使用（163邮箱）
     to_who = target 
     #收件人 是一个列表 不限邮箱
-    subject = '检测到未出勤情况，请尽快回复'  
+    subject = student + '同学，' + course + '缺课提醒！'
     # 发送的标题
     message = '检测到未出勤情况，请尽快回复'  
     # 发送的消息
-    send_mail(subject, message, from_who, [to_who])
-    return HttpResponse("ok")
+    send_mail(
+        subject = subject, 
+        message = message, 
+        from_email = from_who,
+        recipient_list = to_who
+    )
+    print("已发送邮件")
 
 
 #python manage.py shell

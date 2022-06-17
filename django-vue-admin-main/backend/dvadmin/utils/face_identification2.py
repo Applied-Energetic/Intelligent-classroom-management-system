@@ -9,6 +9,8 @@ import os
 import numpy as np
 import cv2
 import face_recognition
+
+from dvadmin.utils.mail import send_email_demo
 from django.conf import settings
 
 # Threshold = 0.65 # 人脸置信度阈值
@@ -248,7 +250,7 @@ def pic(image_url, course, name_original, Threshold=0.68):
 	
 	cv2.imwrite(save_dir, image)
 
-	return faceNum, ",".join(absence_list)
+	return faceNum, ",".join(absence_list), absence_list
 
 # if __name__ == '__main__':
 #	name_list = ['ROSE','JISOO','LISA','JENNIE']

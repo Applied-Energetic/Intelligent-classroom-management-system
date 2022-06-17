@@ -44,7 +44,7 @@ class KechengCreateSerializer(CustomModelSerializer):
 
 class KechengUpdateSerializer(CustomModelSerializer):
     """
-    选课管理 更新时的列化器
+    课表管理 更新时的列化器
     """
     def save(self, **kwargs):
         data = super().save(**kwargs)
@@ -58,7 +58,7 @@ class KechengUpdateSerializer(CustomModelSerializer):
 
 class ExportKechengProfileSerializer(CustomModelSerializer):
     """
-    选课导出 序列化器
+    课表导出 序列化器
     """
 
     class Meta:
@@ -67,7 +67,7 @@ class ExportKechengProfileSerializer(CustomModelSerializer):
 
 class KechengProfileImportSerializer(CustomModelSerializer):
     """
-    选课导入 序列化器
+    课表导入 序列化器
     """
 
     def save(self, **kwargs):
@@ -81,7 +81,7 @@ class KechengProfileImportSerializer(CustomModelSerializer):
 
 class KechengViewSet(CustomModelViewSet):
     """
-    选课管理接口
+    课表管理接口
     list:查询
     create:新增
     update:修改
