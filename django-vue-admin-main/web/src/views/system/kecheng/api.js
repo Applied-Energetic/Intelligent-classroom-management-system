@@ -3,7 +3,7 @@
  * @文件介绍: 班级课表
  */
 import { request } from '@/api/service'
-export const urlPrefix = '/api/system/schedule/'
+export const urlPrefix = '/api/system/kecheng/'
 /**
  * 列表查询
  */

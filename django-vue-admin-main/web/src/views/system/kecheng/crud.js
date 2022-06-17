@@ -1,5 +1,5 @@
 import { request } from '@/api/service'
-import { urlPrefix as schedulePrefix } from './api'
+import { urlPrefix as kechengPrefix } from './api'
 import XEUtils from 'xe-utils'
 export const crudOptions = (vm) => {
   return {
@@ -103,9 +103,10 @@ export const crudOptions = (vm) => {
       {
         title: '班级课表',
         key: 'image',
+        type: 'image-uploader',
         dict: {
           cache: false,
-          url: schedulePrefix,
+          url: kechengPrefix,
           value: 'id',
           lable: 'image',
           getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
