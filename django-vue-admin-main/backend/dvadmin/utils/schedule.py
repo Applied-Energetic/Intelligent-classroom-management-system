@@ -7,7 +7,7 @@
 """
 import os
 from dvadmin.system.models import Message
-from dvadmin.system.models import Schedule
+from dvadmin.system.models import Kecheng
 from django.conf import settings
 
 import copy
@@ -17,8 +17,98 @@ import xlrd
 from PIL import Image, ImageFont, ImageDraw
 
 
-# ----------------------------------------- #
-# 遗传算法
+# ----------------------------------------------------------------- #
+class Schedule:
+    """Class Schedule.
+    定义一个课程类，这个类包含了课程、班级、教师、教室、星期、时间几个属性，
+    其中前三个是我们自定义的，后面三个是需要算法来优化的。
+    """
+    def __init__(self, courseId, classId, teacherId):
+        """Init
+        Arguments:
+            courseId: int, unique course id.
+            classId: int, unique class id.
+            teacherId: int, unique teacher id.
+        """
+        self.courseId = courseId
+        self.classId = classId
+        self.teacherId = teacherId
+
+        self.roomId = 0
+        self.weekDay = 0
+        self.slot = 0
+
+    def random_init(self, roomRange):
+        """random init.
+        返回随机整型
+        numpy.random.randint(low, high=None, size=None, dtype='l')
+
+
+        Arguments:
+            roomSize: int, number of classrooms.
+        """
+        self.roomId = np.random.randint(1, roomRange + 1, 1)[0]
+        self.weekDay = np.random.randint(1, 6, 1)[0]
+        self.slot = np.random.randint(1, 6, 1)[0]
+
+######################################################################
+
+
+"""
+接下来定义cost函数，这个函数用来计算课表种群的冲突。
+当被测试课表冲突为0的时候，这个课表就是个符合规定的课表。冲突检测遵循下面几条规则：
+同一个教室在同一个时间只能有一门课。
+同一个班级在同一个时间只能有一门课 。
+同一个教师在同一个时间只能有一门课。
+同一个班级在同一天不能有相同的课。
+"""
+
+
+def schedule_cost(population, elite):
+    """calculate conflict of class schedules.
+
+    Arguments:
+        population: List, population of class schedules.
+        elite: int, number of best result.
+
+    Returns:
+        index of best result.
+        best conflict score.
+    """
+    conflicts = []
+    n = len(population[0])
+
+    for p in population:
+        conflict = 0
+        for i in range(0, n - 1):
+            for j in range(i + 1, n):
+                # check course in same time and same room
+                if p[i].roomId == p[j].roomId and p[i].weekDay == p[j].weekDay and p[i].slot == p[j].slot:
+                    conflict += 1
+
+                # check course for one class in same time
+                classA = p[i].classId.split(',')
+                classB = p[j].classId.split(',')
+                for a in classA:
+                    for b in classB:
+                        if a == b and p[i].weekDay == p[j].weekDay and p[i].slot == p[j].slot:
+                            conflict += 1
+
+                # check course for one teacher in same time
+                if p[i].teacherId == p[j].teacherId and p[i].weekDay == p[j].weekDay and p[i].slot == p[j].slot:
+                    conflict += 1
+
+                # check same course for one class in same day
+                if p[i].classId == p[j].classId and p[i].courseId == p[j].courseId and p[i].weekDay == p[j].weekDay:
+                    conflict += 1
+
+        conflicts.append(conflict)
+
+    index = np.array(conflicts).argsort()
+
+    return index[: elite], conflicts[index[0]]
+
+
 class GeneticOptimize:
     """Genetic Algorithm.
     """
@@ -164,7 +254,7 @@ class GeneticOptimize:
 
         return bestSchedule
 
-# ----------------------------------------- #
+# --------------------------------------------------------------------- #
 
 
 '''
@@ -212,9 +302,9 @@ def readFrom_xlsx(filepath):
 '''
 
 
-def create_course(course_name, class_name, teacher_name, lesson_per_week):
+def create_course(course_name, class_name, teacher_name, lesson_per_week, npypath):
     # 读取原有列表
-    schedules = np.load('schedules.npy', allow_pickle=True)
+    schedules = np.load(npypath, allow_pickle=True)
     schedules = schedules.tolist()
 
     # 改变列表
@@ -222,7 +312,7 @@ def create_course(course_name, class_name, teacher_name, lesson_per_week):
         schedules.append(Schedule(course_name, class_name, teacher_name))
     # 重新储存npy文件
     schedules = np.array(schedules)
-    np.save('schedules.npy', schedules)
+    np.save(npypath, schedules)
 
 
 '''
@@ -288,9 +378,9 @@ def vis(res, room, savedir, name, choice):
     # 生成图片
     im_new.save(savedir)
     # 由于目前只使用课表图片，所以暂时不做分类
-    sche = Schedule.objects.get(name = name)
-    sche.image = 'http://127.0.0.1:8000/media/class' + name + '.jpg'
-    sche.save()
+    # 
+    img = 'http://127.0.0.1:8000/media/class/' + name + '.jpg'
+    Kecheng.objects.filter(name=name).update(image=img)
     del draw
 
 
@@ -310,7 +400,7 @@ def schedule_init(npypath):
         class_name = class_list[i]
         teacher_name = teacher_list[i]
         lesson_per_week = lesson_times[i]
-        create_course(course_name, class_name, teacher_name, lesson_per_week)
+        create_course(course_name, class_name, teacher_name, lesson_per_week, npypath)
 
 
 def scheduling(course_name, class_name, teacher_name, lesson_per_week):
@@ -319,17 +409,14 @@ def scheduling(course_name, class_name, teacher_name, lesson_per_week):
     npypath = adress + 'schedules.npy'
     # 判断是否存在，不存在就创建，并初始化
     if not os.path.exists(npypath):
-        schedule_init(npypath)
-        class_list = list(Schedule.objects.values_list('cclass', flat=True))
-    else:
-        class_list = list(class_name.split())    
+        schedule_init(npypath) 
 
     # 测试用例
-    # course_name = '编译原理'
+    # course_name = '编译原理' 
     # class_name = '计2,计4,计1,计3'
     # teacher_name = '班晓娟'
     # lesson_per_week = 2
-    create_course(course_name, class_name, teacher_name, lesson_per_week)
+    create_course(course_name, class_name, teacher_name, lesson_per_week, npypath)
 
 # ---------------------以上输入课程信息--------------------------- #
 # ---------------------以下通过遗传算法排课----------------------- #
@@ -347,6 +434,7 @@ def scheduling(course_name, class_name, teacher_name, lesson_per_week):
     roomNum = len(room)
     res = ga.evolution(schedules, roomNum)
 
+    class_list = class_name.split(',')
     # 打印班级课表
     for name in class_list:
         savedir = adress + name + '.jpg'

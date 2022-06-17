@@ -31,7 +31,6 @@ class MessageCreateSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
-        data.set()
         data.save()
         scheduling(data.name, data.cclass, data.teacher, data.num)
         return data
@@ -46,11 +45,10 @@ class MessageCreateSerializer(CustomModelSerializer):
 
 class MessageUpdateSerializer(CustomModelSerializer):
     """
-    选课管理 更新时的列化器
+    信息管理 更新时的列化器
     """
     def save(self, **kwargs):
         data = super().save(**kwargs)
-        data.set()
         data.save()
         return data
 
@@ -60,7 +58,7 @@ class MessageUpdateSerializer(CustomModelSerializer):
 
 class ExportMessageProfileSerializer(CustomModelSerializer):
     """
-    选课导出 序列化器
+    信息导出 序列化器
     """
 
     class Meta:
@@ -69,12 +67,13 @@ class ExportMessageProfileSerializer(CustomModelSerializer):
 
 class MessageProfileImportSerializer(CustomModelSerializer):
     """
-    选课导入 序列化器
+    信息导入 序列化器
     """
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
         data.save()
+        scheduling(data.name, data.cclass, data.teacher, data.num)
         return data
 
     class Meta:
@@ -83,7 +82,7 @@ class MessageProfileImportSerializer(CustomModelSerializer):
 
 class MessageViewSet(CustomModelViewSet):
     """
-    选课管理接口
+    信息管理接口
     list:查询
     create:新增
     update:修改

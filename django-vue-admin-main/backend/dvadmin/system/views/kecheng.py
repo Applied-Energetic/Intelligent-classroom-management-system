@@ -8,75 +8,78 @@ from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import serializers
 
-from dvadmin.system.models import Schedule
+from dvadmin.system.models import Kecheng
 from dvadmin.system.views.file_list import FileSerializer
 from dvadmin.utils.serializers import CustomModelSerializer
 from dvadmin.utils.viewset import CustomModelViewSet
 
-class ScheduleSerializer(CustomModelSerializer):
+class KechengSerializer(CustomModelSerializer):
     """
     信息-序列化器
     """
 
     class Meta:
-        model = Schedule
+        model = Kecheng
         fields = "__all__"
         read_only_fields = ["id"]
 
-class ScheduleCreateSerializer(CustomModelSerializer):
+class KechengCreateSerializer(CustomModelSerializer):
     """
     信息新增-序列化器
     """
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set()
         data.save()
         return data
 
     class Meta:
-        model = Schedule
+        model = Kecheng
         fields = "__all__"
         read_only_fields = ["id"]
         extra_kwargs = {
             'post': {'required': False},
         }
 
-class ScheduleUpdateSerializer(CustomModelSerializer):
+class KechengUpdateSerializer(CustomModelSerializer):
     """
     选课管理 更新时的列化器
     """
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set()
         data.save()
         return data
 
     class Meta:
-        model = Schedule
+        model = Kecheng
         fields = '__all__'
 
-class ExportScheduleProfileSerializer(CustomModelSerializer):
+class ExportKechengProfileSerializer(CustomModelSerializer):
     """
     选课导出 序列化器
     """
 
     class Meta:
-        model = Schedule
+        model = Kecheng
         fields = ('name', 'image')
 
-class ScheduleProfileImportSerializer(CustomModelSerializer):
+class KechengProfileImportSerializer(CustomModelSerializer):
     """
     选课导入 序列化器
     """
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set()
         data.save()
         return data
 
     class Meta:
-        model = Schedule
+        model = Kecheng
 
-class ScheduleViewSet(CustomModelViewSet):
+class KechengViewSet(CustomModelViewSet):
     """
     选课管理接口
     list:查询
@@ -85,14 +88,14 @@ class ScheduleViewSet(CustomModelViewSet):
     retrieve:单例
     destroy:删除
     """
-    queryset = Schedule.objects.all()
-    serializer_class = ScheduleSerializer
-    create_serializer_class = ScheduleCreateSerializer
-    update_serializer_class = ScheduleUpdateSerializer
+    queryset = Kecheng.objects.all()
+    serializer_class = KechengSerializer
+    create_serializer_class = KechengCreateSerializer
+    update_serializer_class = KechengUpdateSerializer
     extra_filter_backends = []
     # 导出
     export_field_label = ['班级名称', '课表']
-    export_serializer_class = ExportScheduleProfileSerializer
+    export_serializer_class = ExportKechengProfileSerializer
     #导入
-    import_serializer_class = ScheduleProfileImportSerializer
+    import_serializer_class = KechengProfileImportSerializer
     import_field_dict = {'name':'班级名称', 'image':'课表'}

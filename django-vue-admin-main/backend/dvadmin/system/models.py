@@ -8,7 +8,7 @@ import numpy as np
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.forms import NullBooleanField
-
+from django.conf import settings
 
 from dvadmin.utils.models import CoreModel, table_prefix
 from dvadmin.utils.face_identification import face_identify
@@ -229,24 +229,11 @@ class Message(CoreModel):
     cclass = models.CharField(max_length=255, null=True, blank=True,verbose_name="上课班级", help_text="上课班级")
     teacher = models.CharField(max_length=64, blank=True, verbose_name="任课教师", help_text="任课教师")
     num = models.IntegerField(default=0, blank=True, verbose_name="上课次数", help_text="上课次数")
-    roomID = models.IntegerField(null=True, blank=True, verbose_name="教室ID", help_text="教室ID")
-    weekDay = models.IntegerField(null=True, blank=True, verbose_name="星期", help_text="星期")
-    slot = models.IntegerField(null=True, blank=True, verbose_name="时间", help_text="时间")
+    roomID = models.IntegerField(default=0, null=True, blank=True, verbose_name="教室ID", help_text="教室ID")
+    weekDay = models.IntegerField(default=0, null=True, blank=True, verbose_name="星期", help_text="星期")
+    slot = models.IntegerField(default=0, null=True, blank=True, verbose_name="时间", help_text="时间")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
     
-    def set(self):
-        """random init.
-        返回随机整型
-        numpy.random.randint(low, high=None, size=None, dtype='l')
-        Arguments:
-            roomSize: int, number of classrooms.
-        """
-        # roomRange = Dept.objects.exclude(large=0).aggregate(Count("id"))
-        # large 更改完成后，上条注释改为执行语句
-        # roomID默认值改为np.random.randint(1, roomRange + 1, 1)[0]
-        self.roomID = np.random.randint(1, 6, 1)[0]
-        self.weekDay = np.random.randint(1, 6, 1)[0]
-        self.slot = np.random.randint(1, 6, 1)[0]
 
     class Meta:
         db_table = table_prefix + "system_Message"
@@ -255,16 +242,19 @@ class Message(CoreModel):
         ordering = ('sort',)
 
 #新增类课表管理
-class Schedule(CoreModel):
+class Kecheng(CoreModel):
     name = models.CharField(max_length=64, blank=False, verbose_name="班级名称", help_text="班级名称")
     image = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")    
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
 
     def set(self):
-        self.image = 'http://127.0.0.1:8000/media/class' + self.name + '.jpg'
+        img = 'http://127.0.0.1:8000/media/class/' + self.name + '.jpg'
+        path = str(settings.BASE_DIR).replace("\\","/") + '/media/class/' + self.name + '.jpg'
+        if os.path.exists(path):
+            self.image = img
 
     class Meta:
-        db_table = table_prefix + "system_Schedule"
+        db_table = table_prefix + "system_Kecheng"
         verbose_name = '课表表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
