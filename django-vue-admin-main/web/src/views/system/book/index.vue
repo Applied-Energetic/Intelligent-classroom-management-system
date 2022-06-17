@@ -9,14 +9,13 @@
           @submit="handleSearch"
         />
         <el-button-group>
-          <!-- <el-button
+          <el-button
             size="small"
             v-permission="'Create'"
             type="primary"
             @click="addRow"
             ><i class="el-icon-plus" /> 新增</el-button
-          > -->
-          点击编辑按钮进行审批
+          >
         </el-button-group>
         <crud-toolbar
           :search.sync="crud.searchOptions.show"
