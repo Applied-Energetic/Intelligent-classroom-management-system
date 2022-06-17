@@ -16,6 +16,14 @@
             @click="addRow"
             ><i class="el-icon-plus" /> 新增</el-button
           >
+           <el-button
+            size="small"
+            v-permission="'Export'"
+            type="danger"
+            @click="onExport"
+          ><i class="el-icon-download"/> 导出
+          </el-button>
+          <importExcel v-permission="'Import'" importApi="/api/system/kecheng/import/">导入</importExcel>
         </el-button-group>
         <crud-toolbar
           :search.sync="crud.searchOptions.show"
@@ -62,6 +70,15 @@ export default {
         name: 'menuButton',
         params: { id: scope.row.id },
         query: { name: scope.row.name }
+      })
+    },
+    onExport () {
+      this.$confirm('是否确认导出所有数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function () {
+        return api.exportData()
       })
     }
   }

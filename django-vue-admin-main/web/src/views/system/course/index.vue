@@ -60,6 +60,16 @@ export default {
     updateRequest (row) {
       return api.UpdateObj(row)
     },
+    // 导出确认
+    onExport () {
+      this.$confirm('是否确认导出所有数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function () {
+        return api.exportData()
+      })
+    },
     delRequest (row) {
       return api.DelObj(row.id)
     }

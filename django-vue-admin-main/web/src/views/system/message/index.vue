@@ -62,6 +62,15 @@ export default {
     },
     delRequest (row) {
       return api.DelObj(row.id)
+    },
+    onExport () {
+      this.$confirm('是否确认导出所有数据项?', '警告', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(function () {
+        return api.exportData()
+      })
     }
   }
 }
