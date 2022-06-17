@@ -1,6 +1,3 @@
-// import { request } from '@/api/service'
-// import { urlPrefix as messagePrefix } from './api'
-// import XEUtils from 'xe-utils'
 export const crudOptions = (vm) => {
   return {
     pageOptions: {
