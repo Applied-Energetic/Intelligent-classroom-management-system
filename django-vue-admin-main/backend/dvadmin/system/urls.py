@@ -24,7 +24,6 @@ from dvadmin.system.views.system_config import SystemConfigViewSet
 from dvadmin.system.views.user import UserViewSet
 from dvadmin.system.views.book import BookViewSet
 from dvadmin.system.views.student import StudentViewSet
-from dvadmin.system.views.cbook import cBookViewSet
 from dvadmin.system.views.course import CourseViewSet
 from dvadmin.system.views.message import MessageViewSet
 from dvadmin.system.views.kecheng import KechengViewSet

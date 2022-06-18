@@ -186,7 +186,7 @@ class Book(CoreModel):
         db_table = table_prefix + "system_book"
         verbose_name = '预定表'
         verbose_name_plural = verbose_name
-        ordering = ('sort',)s
+        ordering = ('sort',)
 
 # 新增类出勤
 class Student(CoreModel):
