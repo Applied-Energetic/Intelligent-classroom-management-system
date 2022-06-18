@@ -159,7 +159,6 @@ export const crudOptions = (vm) => {
             })
           }
         },
-        disabled: true,
         form: {
           rules: [ // 表单校验规则
             { required: true, message: '必填项' }
@@ -167,7 +166,6 @@ export const crudOptions = (vm) => {
           itemProps: {
             class: { yxtInput: true }
           },
-          disabled: true,
           component: {
             span: 12,
             props: { multiple: false },
@@ -177,14 +175,6 @@ export const crudOptions = (vm) => {
                 {
                   field: 'name',
                   title: '权限名称'
-                },
-                {
-                  field: 'status_label',
-                  title: '状态'
-                },
-                {
-                  field: 'parent_name',
-                  title: '总权限'
                 }
               ]
             }
