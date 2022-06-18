@@ -32,6 +32,7 @@ class CourseCreateSerializer(CustomModelSerializer):
     def save(self, **kwargs):
         data = super().save(**kwargs)
         data.regist()
+        data.set_dept()
         data.save()
         return data
 
@@ -50,6 +51,7 @@ class CourseUpdateSerializer(CustomModelSerializer):
     def save(self, **kwargs):
         data = super().save(**kwargs)
         data.regist()
+        data.set_dept()
         data.save()
         return data
 
@@ -73,6 +75,7 @@ class CourseProfileImportSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set_dept()
         data.save()
         return data
 

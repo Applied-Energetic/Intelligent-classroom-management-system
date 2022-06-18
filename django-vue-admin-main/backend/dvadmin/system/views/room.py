@@ -41,6 +41,8 @@ class RoomProfileImportSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set_number_uses()
+        data.set_dept()
         data.save()
         return data
 
@@ -57,6 +59,7 @@ class RoomCreateSerializer(CustomModelSerializer):
         instance = super().create(validated_data)
         instance.room_belong_id = instance.id
         instance.set_number_uses()
+        instance.set_dept()
         instance.save()
         return instance
 
@@ -66,12 +69,13 @@ class RoomCreateSerializer(CustomModelSerializer):
 
 class RoomUpdateSerializer(CustomModelSerializer):
     """
-    部门管理 更新时的列化器
+    教室管理 更新时的列化器
     """
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
         data.set_number_uses()
+        data.set_dept()
         data.save()
         return data
 
@@ -82,7 +86,7 @@ class RoomUpdateSerializer(CustomModelSerializer):
         
 class RoomViewSet(CustomModelViewSet):
     """
-    部门管理接口
+    教室管理接口
     list:查询
     create:新增
     update:修改

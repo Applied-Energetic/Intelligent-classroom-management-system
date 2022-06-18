@@ -38,6 +38,7 @@ class StudentCreateSerializer(CustomModelSerializer):
         # data.post.set(self.initial_data.get('post', []))
         # self.initial_data['number'] = number
         data.identifity()
+        data.set_dept()
         data.save()
         return data
 
@@ -58,6 +59,7 @@ class StudentUpdateSerializer(CustomModelSerializer):
     def save(self, **kwargs):
         data = super().save(**kwargs)
         data.identifity()
+        data.set_dept()
         data.save()
         return data
 

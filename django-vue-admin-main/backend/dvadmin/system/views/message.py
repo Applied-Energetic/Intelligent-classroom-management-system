@@ -31,6 +31,7 @@ class MessageCreateSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set_dept()
         data.save()
         scheduling(data.name, data.cclass, data.teacher, data.num)
         return data
@@ -49,6 +50,7 @@ class MessageUpdateSerializer(CustomModelSerializer):
     """
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set_dept()
         data.save()
         return data
 
@@ -72,6 +74,7 @@ class MessageProfileImportSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set_dept()
         data.save()
         scheduling(data.name, data.cclass, data.teacher, data.num)
         return data

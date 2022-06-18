@@ -30,6 +30,7 @@ class KechengCreateSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set_dept()
         data.set()
         data.save()
         return data
@@ -48,6 +49,7 @@ class KechengUpdateSerializer(CustomModelSerializer):
     """
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set_dept()
         data.set()
         data.save()
         return data
@@ -72,6 +74,7 @@ class KechengProfileImportSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
+        data.set_dept()
         data.set()
         data.save()
         return data

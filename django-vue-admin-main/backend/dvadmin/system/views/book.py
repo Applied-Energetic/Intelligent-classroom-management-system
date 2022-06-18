@@ -20,6 +20,39 @@ class BookSerializer(CustomModelSerializer):
         fields = "__all__"
         read_only_fields = ["id"]
 
+class BookCreateSerializer(CustomModelSerializer):
+    """
+    信息新增-序列化器
+    """
+
+    def save(self, **kwargs):
+        data = super().save(**kwargs)
+        data.set_dept()
+        data.save()
+        return data
+
+    class Meta:
+        model = Book
+        fields = "__all__"
+        read_only_fields = ["id"]
+        extra_kwargs = {
+            'post': {'required': False},
+        }
+
+class BookUpdateSerializer(CustomModelSerializer):
+    """
+    课表管理 更新时的列化器
+    """
+    def save(self, **kwargs):
+        data = super().save(**kwargs)
+        data.set_dept()
+        data.save()
+        return data
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+
 class BookViewSet(CustomModelViewSet):
     """
     预订权限接口
@@ -32,4 +65,6 @@ class BookViewSet(CustomModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     serializer_classroom_class = RoomSerializer
+    create_serializer_class = BookCreateSerializer
+    update_serializer_class = BookUpdateSerializer
     extra_filter_backends = []
