@@ -41,8 +41,6 @@ class RoomProfileImportSerializer(CustomModelSerializer):
 
     def save(self, **kwargs):
         data = super().save(**kwargs)
-        data.set_number_uses()
-        data.set_dept()
         data.save()
         return data
 
@@ -57,9 +55,8 @@ class RoomCreateSerializer(CustomModelSerializer):
 
     def create(self, validated_data):
         instance = super().create(validated_data)
-        instance.room_belong_id = instance.id
+        instance.dept_belong_id = instance.id
         instance.set_number_uses()
-        instance.set_dept()
         instance.save()
         return instance
 
@@ -75,7 +72,6 @@ class RoomUpdateSerializer(CustomModelSerializer):
     def save(self, **kwargs):
         data = super().save(**kwargs)
         data.set_number_uses()
-        data.set_dept()
         data.save()
         return data
 
