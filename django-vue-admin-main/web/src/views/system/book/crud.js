@@ -1,6 +1,6 @@
 import { request } from '@/api/service'
 import { BUTTON_CBOOK_BOOL } from '@/config/button'
-import { urlPrefix as deptPrefix } from '../dept/api'
+import { urlPrefix as roomPrefix } from '../room/api'
 import XEUtils from 'xe-utils'
 export const crudOptions = (vm) => {
   return {
@@ -105,7 +105,7 @@ export const crudOptions = (vm) => {
         type: 'cascader',
         dict: {
           cache: false,
-          url: deptPrefix + '?limit=999&status=1',
+          url: roomPrefix + '?limit=999&status=1',
           isTree: true,
           value: 'id', // 数据字典中value字段的属性名
           label: 'name', // 数据字典中label字段的属性名

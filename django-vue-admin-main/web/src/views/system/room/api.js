@@ -1,10 +1,10 @@
 /*
  * @Auther: 夏妍
- * @文件介绍: 权限管理接口
+ * @文件介绍: 教室管理接口
  */
 import { request } from '@/api/service'
 import XEUtils from 'xe-utils'
-export const urlPrefix = '/api/system/dept/'
+export const urlPrefix = '/api/system/room/'
 
 /**
  * 列表查询

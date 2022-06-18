@@ -2,8 +2,6 @@ import { request } from '@/api/service'
 import { BUTTON_STATUS_BOOL } from '@/config/button'
 import { urlPrefix as deptPrefix } from './api'
 import XEUtils from 'xe-utils'
-import util from '@/libs/util'
-const uploadUrl = util.baseURL() + 'api/system/file/'
 export const crudOptions = (vm) => {
   return {
     pagination: false,
@@ -90,7 +88,7 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '教室位置',
+      title: '总权限',
       key: 'parent',
       show: false,
       search: {
@@ -130,7 +128,7 @@ export const crudOptions = (vm) => {
       }
     },
     {
-      title: '教室名称',
+      title: '子权限',
       key: 'name',
       sortable: true,
       treeNode: true, // 设置为树形列
@@ -146,204 +144,17 @@ export const crudOptions = (vm) => {
       type: 'input',
       form: {
         rules: [ // 表单校验规则
-          { required: true, message: '教学楼名称必填项' }
+          { required: true, message: '子权限名称必填项' }
         ],
         component: {
           span: 12,
           props: {
             clearable: true
           },
-          placeholder: '请输入教室名称'
+          placeholder: '请输入子权限名称'
         },
         itemProps: {
           class: { yxtInput: true }
-        }
-      }
-    },
-    {
-      title: '负责人',
-      key: 'owner',
-      sortable: true,
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入负责人'
-        }
-      }
-    },
-    {
-      title: '联系电话',
-      key: 'phone',
-      sortable: true,
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入联系电话'
-        }
-      }
-    },
-    {
-      title: '邮箱',
-      key: 'email',
-      sortable: true,
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入邮箱'
-        },
-        rules: [
-          { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] }
-        ]
-      }
-    },
-    {
-      title: '设备',
-      key: 'tools',
-      sortable: true,
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入设备基本信息'
-        }
-      }
-    },
-    {
-      title: '容量',
-      key: 'large',
-      sortable: true,
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入教室容量'
-        }
-      }
-    },
-    {
-      title: '使用须知',
-      key: 'message',
-      sortable: true,
-      form: {
-        component: {
-          span: 12,
-          props: {
-            clearable: true
-          },
-          placeholder: '请输入该教室使用须知'
-        }
-      }
-    },
-    {
-      title: '流量照片',
-      key: 'avatar',
-      type: 'avatar-uploader',
-      width: 100,
-      align: 'left',
-      form: {
-        component: {
-          props: {
-            uploader: {
-              action: uploadUrl,
-              headers: {
-                Authorization: 'JWT ' + util.cookies.get('token')
-              },
-              type: 'form',
-              successHandle (ret, option) {
-                if (ret.data === null || ret.data === '') {
-                  throw new Error('上传失败')
-                }
-                return { url: util.baseURL() + ret.data.url, key: option.data.key }
-              }
-            },
-            elProps: { // 与el-uploader 配置一致
-              multiple: true,
-              limit: 5 // 限制5个文件
-            },
-            sizeLimit: 1024 * 1024 * 1024 * 1024 * 1024 // 不能超过限制
-          },
-          span: 24
-        },
-        helper: '请上传考勤图片'
-      },
-      valueResolve (row, col) {
-        const value = row[col.key]
-        if (value != null && value instanceof Array) {
-          if (value.length >= 0) {
-            row[col.key] = value[0]
-          } else {
-            row[col.key] = null
-          }
-        }
-      },
-      component: {
-        props: {
-          buildUrl (value, item) {
-            if (value && value.indexOf('http') !== 0) {
-              return util.baseURL() + value
-            }
-            return value
-          }
-        }
-      }
-    },
-    {
-      title: '当前人数',
-      key: 'number',
-      dict: {
-        cache: false,
-        url: deptPrefix,
-        value: 'id',
-        lable: 'number',
-        getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
-          return request({ url: url }).then(ret => {
-            const data = XEUtils(ret.data.data)
-            return data
-          })
-        }
-      },
-      form: {
-        disabled: true,
-        value: true,
-        component: {
-          span: 12
-        }
-      }
-    },
-    {
-      title: '使用情况',
-      key: 'uses',
-      sortable: false,
-      dict: {
-        cache: false,
-        url: deptPrefix,
-        value: 'id',
-        lable: 'uses',
-        getData: (url, dict) => { // 配置此参数会覆盖全局的getRemoteDictFunc
-          return request({ url: url }).then(ret => {
-            const data = XEUtils(ret.data.data)
-            return data
-          })
-        }
-      },
-      form: {
-        disabled: true,
-        value: true,
-        component: {
-          span: 12
         }
       }
     },
