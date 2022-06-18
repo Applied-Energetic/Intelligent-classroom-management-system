@@ -159,6 +159,7 @@ export const crudOptions = (vm) => {
             })
           }
         },
+        disabled: true,
         form: {
           rules: [ // 表单校验规则
             { required: true, message: '必填项' }
@@ -166,6 +167,7 @@ export const crudOptions = (vm) => {
           itemProps: {
             class: { yxtInput: true }
           },
+          disabled: true,
           component: {
             span: 12,
             props: { multiple: false },
@@ -182,7 +184,7 @@ export const crudOptions = (vm) => {
                 },
                 {
                   field: 'parent_name',
-                  title: '父级部门'
+                  title: '总权限'
                 }
               ]
             }
