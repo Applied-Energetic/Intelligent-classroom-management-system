@@ -1,6 +1,6 @@
 import { request } from '@/api/service'
 import { BUTTON_STATUS_BOOL } from '@/config/button'
-// import { urlPrefix as deptPrefix } from '../dept/api'
+import { urlPrefix as deptPrefix } from '../dept/api'
 import util from '@/libs/util'
 // import { Avatar } from 'node_modules/element-ui/types/element-ui'
 
@@ -137,9 +137,8 @@ export const crudOptions = (vm) => {
           }
         }
       },
-      /*
       {
-        title: '部门',
+        title: '权限',
         key: 'dept',
         search: {
           disabled: true
@@ -175,7 +174,7 @@ export const crudOptions = (vm) => {
               columns: [
                 {
                   field: 'name',
-                  title: '部门名称'
+                  title: '权限名称'
                 },
                 {
                   field: 'status_label',
@@ -189,7 +188,7 @@ export const crudOptions = (vm) => {
             }
           }
         }
-      }, */
+      },
       {
         title: '手机号码',
         key: 'mobile',
