@@ -61,7 +61,7 @@ def compare_faces(x, y, Threshold):
 
 def initialize_npy(path):
 	'''
-	# 列表npy文件初始换
+	# 列表npy文件初始化
 	'''
 	# 判断是否存在，不存在就创建，并初始化
 	if not os.path.exists(path):
