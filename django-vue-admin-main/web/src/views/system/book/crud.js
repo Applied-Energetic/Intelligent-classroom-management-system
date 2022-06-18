@@ -1,6 +1,7 @@
 import { request } from '@/api/service'
 import { BUTTON_CBOOK_BOOL } from '@/config/button'
 import { urlPrefix as roomPrefix } from '../room/api'
+import { urlPrefix as deptPrefix } from '../dept/api'
 import XEUtils from 'xe-utils'
 export const crudOptions = (vm) => {
   return {
@@ -260,6 +261,60 @@ export const crudOptions = (vm) => {
           },
           itemProps: {
             class: { yxtInput: true }
+          }
+        }
+      },
+      {
+        title: '权限',
+        key: 'dept',
+        search: {
+          disabled: true
+        },
+        minWidth: 140,
+        type: 'table-selector',
+        dict: {
+          cache: false,
+          url: deptPrefix,
+          value: 'id', // 数据字典中value字段的属性名
+          label: 'name', // 数据字典中label字段的属性名
+          getData: (url, dict, { form, component }) => {
+            return request({ url: url, params: { page: 1, limit: 10, status: 1 } }).then(ret => {
+              component._elProps.page = ret.data.page
+              component._elProps.limit = ret.data.limit
+              component._elProps.total = ret.data.total
+              return ret.data.data
+            })
+          }
+        },
+        disabled: true,
+        form: {
+          rules: [ // 表单校验规则
+            { required: true, message: '必填项' }
+          ],
+          itemProps: {
+            class: { yxtInput: true }
+          },
+          disabled: true,
+          component: {
+            span: 12,
+            props: { multiple: false },
+            elProps: {
+              pagination: true,
+              columns: [
+                {
+                  field: 'name',
+                  title: '权限名称'
+                },
+                {
+                  field: 'status_label',
+                  title: '状态'
+                },
+                {
+                  field: 'parent_name',
+                  title: '总权限'
+                }
+              ]
+            }
           }
         }
       }
