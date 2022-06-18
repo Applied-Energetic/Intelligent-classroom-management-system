@@ -110,7 +110,6 @@ class Dept(CoreModel):
     phone = models.CharField(max_length=32, verbose_name="联系电话", null=True, blank=True, help_text="联系电话")
     email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
     tools = models.CharField(max_length=32, verbose_name="设备", null=True, blank=True, help_text="设备")
-    message = models.CharField(max_length=32, verbose_name="使用须知", null=True, blank=True, help_text="使用须知")
     status = models.BooleanField(default=True, verbose_name="状态", null=True, blank=True, help_text="状态")
     uses = models.CharField(max_length=16, default="0.00%", verbose_name="使用情况", help_text="使用情况")
     parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="总权限",
