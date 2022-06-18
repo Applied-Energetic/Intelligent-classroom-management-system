@@ -28,6 +28,7 @@ from dvadmin.system.views.cbook import cBookViewSet
 from dvadmin.system.views.course import CourseViewSet
 from dvadmin.system.views.message import MessageViewSet
 from dvadmin.system.views.kecheng import KechengViewSet
+from dvadmin.system.views.room import RoomViewSet
 
 system_url = routers.SimpleRouter()
 system_url.register(r'menu', MenuViewSet)
@@ -43,11 +44,11 @@ system_url.register(r'file', FileViewSet)
 system_url.register(r'api_white_list', ApiWhiteListViewSet)
 system_url.register(r'system_config', SystemConfigViewSet)
 system_url.register(r'book', BookViewSet)
-system_url.register(r'cbook', cBookViewSet)
 system_url.register(r'student', StudentViewSet)
 system_url.register(r'course', CourseViewSet)
 system_url.register(r'message', MessageViewSet)
 system_url.register(r'kecheng', KechengViewSet)
+system_url.register(r'room', RoomViewSet)
 
 urlpatterns = [
     path('role/roleId_get_menu/<int:pk>/', RoleViewSet.as_view({'get': 'roleId_get_menu'})),
@@ -70,6 +71,8 @@ urlpatterns = [
     path('message/export/', MessageViewSet.as_view({'post': 'export_data', })),
     path('message/import/', MessageViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
     path('kecheng/export/', KechengViewSet.as_view({'post': 'export_data', })),
-    path('kecheng/import/', KechengViewSet.as_view({'get': 'import_data', 'post': 'import_data'}))
+    path('kecheng/import/', KechengViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
+    path('room/export/', RoomViewSet.as_view({'post': 'export_data', })),
+    path('room/import/', RoomViewSet.as_view({'get': 'import_data', 'post': 'import_data'})),
 ]
 urlpatterns += system_url.urls
