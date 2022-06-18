@@ -117,7 +117,7 @@ class Dept(CoreModel):
         ordering = ('sort',)
 
 def get_dept(name):
-    return Dept.objects.filter(name=name).first()
+    return Dept.objects.filter(name=name).values('id')
 
 # 新增类教室
 class Room(CoreModel):
@@ -135,11 +135,10 @@ class Room(CoreModel):
                                db_constraint=False, null=True, blank=True, help_text="上级教室")
     avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
-    dept = models.ManyToManyField(to='Dept', blank=True, verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
 
     def set_dept(self):
-        d = get_dept("学生")
-        self.dept.add(d)
+        id = get_dept("学生")
+        self.dept_belong_id = id
 
     def set_number_uses(self):
         if self.avatar != None:
@@ -172,11 +171,10 @@ class Book(CoreModel):
                                db_constraint=False, null=True, blank=True, help_text="上级教室")
     role = models.ForeignKey(to='Role', verbose_name='角色', on_delete=models.PROTECT, db_constraint=False, null=True,
                              blank=True, help_text="角色")
-    dept = models.ManyToManyField(to='Dept', blank=True, verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
     
     def set_dept(self):
-        d = get_dept("学生")
-        self.dept.add(d)
+        id = get_dept("学生")
+        self.dept_belong_id = id
 
     class Meta:
         db_table = table_prefix + "system_book"
@@ -191,11 +189,10 @@ class Student(CoreModel):
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
     absence = models.CharField(max_length=255, verbose_name="缺勤名单", null=True, blank=True, help_text="缺勤名单")
-    dept = models.ManyToManyField(to='Dept', blank=True, verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
 
     def set_dept(self):
-        d = get_dept("教师")
-        self.dept.add(d)
+        id = get_dept("教师")
+        self.dept_belong_id = id
 
     def identifity(self):
         if self.avatar != None:
@@ -224,11 +221,10 @@ class Course(CoreModel):
     email = models.EmailField(max_length=255, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
     cname = models.CharField(max_length=64, blank=True, verbose_name="课程名称", help_text="课程名称")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
-    dept = models.ManyToManyField(to='Dept', blank=True, verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
 
     def set_dept(self):
-        d = get_dept("教师")
-        self.dept.add(d)
+        id = get_dept("教师")
+        self.dept_belong_id = id
 
     def regist(self):
         registeredIdentity(self.avatar, self.name, self.cname)
@@ -250,14 +246,13 @@ class Message(CoreModel):
     weekDay = models.IntegerField(default=0, null=True, blank=True, verbose_name="星期", help_text="星期")
     slot = models.IntegerField(default=0, null=True, blank=True, verbose_name="时间", help_text="时间")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
-    dept = models.ManyToManyField(to='Dept', blank=True, verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
 
     def set_dept(self):
-        d = get_dept("管理员")
-        self.dept.add(d)
+        id = get_dept("管理员")
+        self.dept_belong_id = id
 
     class Meta:
-        db_table = table_prefix + "system_Message"
+        db_table = table_prefix + "system_message"
         verbose_name = '信息表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
@@ -267,11 +262,10 @@ class Kecheng(CoreModel):
     name = models.CharField(max_length=64, blank=False, verbose_name="班级名称", help_text="班级名称")
     image = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")    
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
-    dept = models.ManyToManyField(to='Dept', blank=True, verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
     
     def set_dept(self):
-        d = get_dept("学生")
-        self.dept.add(d)
+        id = get_dept("学生")
+        self.dept_belong_id = id
 
     def set(self):
         img = 'http://127.0.0.1:8000/media/class/' + self.name + '.jpg'
@@ -280,7 +274,7 @@ class Kecheng(CoreModel):
             self.image = img
 
     class Meta:
-        db_table = table_prefix + "system_Kecheng"
+        db_table = table_prefix + "system_kecheng"
         verbose_name = '课表表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
