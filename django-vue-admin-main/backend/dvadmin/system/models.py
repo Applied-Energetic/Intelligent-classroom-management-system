@@ -47,7 +47,7 @@ class Users(AbstractUser, CoreModel):
     is_active = models.BooleanField(default=True, verbose_name="用户状态", null=True, blank=True, help_text="用户状态")
     # 不需要对应教室
     dept = models.ForeignKey(to='Dept', verbose_name='所属部门', on_delete=models.PROTECT, db_constraint=False, null=True,
-                              blank=True, help_text="关联部门")
+                              blank=True, help_text="关联权限")
 
     def set_password(self, raw_password):
         super().set_password(hashlib.md5(raw_password.encode(encoding='UTF-8')).hexdigest())
@@ -91,7 +91,7 @@ class Role(CoreModel):
     )
     data_range = models.IntegerField(default=0, choices=DATASCOPE_CHOICES, verbose_name="数据权限范围", help_text="数据权限范围")
     remark = models.TextField(verbose_name="备注", help_text="备注", null=True, blank=True)
-    dept = models.ManyToManyField(to='Dept', verbose_name='数据权限-关联部门', db_constraint=False, help_text="数据权限-关联部门")
+    dept = models.ManyToManyField(to='Dept', verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
     menu = models.ManyToManyField(to='Menu', verbose_name='关联菜单', db_constraint=False, help_text="关联菜单")
     permission = models.ManyToManyField(to='MenuButton', verbose_name='关联菜单的接口按钮', db_constraint=False,
                                         help_text="关联菜单的接口按钮")
@@ -104,32 +104,21 @@ class Role(CoreModel):
         
 # dept更改为权限类
 class Dept(CoreModel):
-    name = models.CharField(max_length=64, verbose_name="教室名称", help_text="教室名称")
+    name = models.CharField(max_length=64, verbose_name="子权限", help_text="子权限")
     sort = models.IntegerField(default=1, verbose_name="排序", help_text="排序")
     owner = models.CharField(max_length=32, verbose_name="负责人", null=True, blank=True, help_text="负责人")
     phone = models.CharField(max_length=32, verbose_name="联系电话", null=True, blank=True, help_text="联系电话")
     email = models.EmailField(max_length=32, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
     tools = models.CharField(max_length=32, verbose_name="设备", null=True, blank=True, help_text="设备")
     message = models.CharField(max_length=32, verbose_name="使用须知", null=True, blank=True, help_text="使用须知")
-    status = models.BooleanField(default=True, verbose_name="教室状态", null=True, blank=True, help_text="教室状态")
-    large = models.IntegerField(default=0, verbose_name="教室容量", null=True, blank=True, help_text="教室容量")
+    status = models.BooleanField(default=True, verbose_name="状态", null=True, blank=True, help_text="状态")
     uses = models.CharField(max_length=16, default="0.00%", verbose_name="使用情况", help_text="使用情况")
-    parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="上级部门",
-                               db_constraint=False, null=True, blank=True, help_text="上级部门")
-    avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
-    number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
-
-    def set_number_uses(self):
-        if self.avatar != None:
-            self.number = face_identify(self.avatar)
-            if self.large != 0:
-                self.uses =  '{:.2%}'.format(self.number/self.large)
-        else:
-            self.number = 0
-
+    parent = models.ForeignKey(to='Dept', on_delete=models.CASCADE, default=None, verbose_name="总权限",
+                               db_constraint=False, null=True, blank=True, help_text="总权限")
+    
     class Meta:
         db_table = table_prefix + "system_dept"
-        verbose_name = '部门表'
+        verbose_name = '权限表'
         verbose_name_plural = verbose_name
         ordering = ('sort',)
 
@@ -149,6 +138,7 @@ class Room(CoreModel):
                                db_constraint=False, null=True, blank=True, help_text="上级教室")
     avatar = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
+    dept = models.ManyToManyField(to='Dept', verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
 
     def set_number_uses(self):
         if self.avatar != None:
@@ -181,6 +171,7 @@ class Book(CoreModel):
                                db_constraint=False, null=True, blank=True, help_text="上级教室")
     role = models.ForeignKey(to='Role', verbose_name='角色', on_delete=models.PROTECT, db_constraint=False, null=True,
                              blank=True, help_text="角色")
+    dept = models.ManyToManyField(to='Dept', verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
 
     class Meta:
         db_table = table_prefix + "system_book"
@@ -195,6 +186,7 @@ class Student(CoreModel):
     number = models.IntegerField(default=0, verbose_name="出勤人数", help_text="出勤人数")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
     absence = models.CharField(max_length=255, verbose_name="缺勤名单", null=True, blank=True, help_text="缺勤名单")
+    dept = models.ManyToManyField(to='Dept', verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
 
     def identifity(self):
         if self.avatar != None:
@@ -223,6 +215,7 @@ class Course(CoreModel):
     email = models.EmailField(max_length=255, verbose_name="邮箱", null=True, blank=True, help_text="邮箱")
     cname = models.CharField(max_length=64, blank=True, verbose_name="课程名称", help_text="课程名称")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
+    dept = models.ManyToManyField(to='Dept', verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
 
     def regist(self):
         registeredIdentity(self.avatar, self.name, self.cname)
@@ -244,7 +237,7 @@ class Message(CoreModel):
     weekDay = models.IntegerField(default=0, null=True, blank=True, verbose_name="星期", help_text="星期")
     slot = models.IntegerField(default=0, null=True, blank=True, verbose_name="时间", help_text="时间")
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
-    
+    dept = models.ManyToManyField(to='Dept', verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
 
     class Meta:
         db_table = table_prefix + "system_Message"
@@ -257,7 +250,8 @@ class Kecheng(CoreModel):
     name = models.CharField(max_length=64, blank=False, verbose_name="班级名称", help_text="班级名称")
     image = models.CharField(max_length=255, verbose_name="出勤照片", null=True, blank=True, help_text="出勤照片")    
     sort = models.IntegerField(default=1, verbose_name="显示排序", help_text="显示排序")
-
+    dept = models.ManyToManyField(to='Dept', verbose_name='数据权限-关联权限', db_constraint=False, help_text="数据权限-关联权限")
+    
     def set(self):
         img = 'http://127.0.0.1:8000/media/class/' + self.name + '.jpg'
         path = str(settings.BASE_DIR).replace("\\","/") + '/media/class/' + self.name + '.jpg'
