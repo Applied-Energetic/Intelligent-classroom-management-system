@@ -195,7 +195,7 @@ class Student(CoreModel):
         self.dept_belong_id = id
 
     def identifity(self):
-        if self.avatar != None:
+        if self.avatar != None and len(self.avatar) != 0:
             name_list = list(Course.objects.filter(cname__exact=self.name).values_list('name', flat=True))
             self.number, self.absence, absence_list = pic(self.avatar, self.name, name_list)
             # 发送邮件
