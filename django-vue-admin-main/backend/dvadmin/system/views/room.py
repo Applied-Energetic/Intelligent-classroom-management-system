@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-@author: 猿小天
-@contact: QQ:1638245306
-@Created on: 2021/6/3 003 0:30
-@Remark: 角色管理
+@author: 陈佳婧
+@Remark: 预订管理
 """
 from rest_framework import serializers
 
@@ -25,7 +23,7 @@ class RoomSerializer(CustomModelSerializer):
         fields = "__all__"
         read_only_fields = ["id"]
 
-class ExportUserProfileSerializer(CustomModelSerializer):
+class ExportRoomProfileSerializer(CustomModelSerializer):
     """
     教室导出 序列化器
     """
@@ -42,6 +40,7 @@ class RoomProfileImportSerializer(CustomModelSerializer):
     def save(self, **kwargs):
         data = super().save(**kwargs)
         data.set_dept()
+        data.set_number_uses()
         data.save()
         return data
 
@@ -98,7 +97,7 @@ class RoomViewSet(CustomModelViewSet):
     update_serializer_class = RoomUpdateSerializer
     # 导出
     export_field_label = ['教室名称', '教室容量', '出勤照片', '出勤人数']
-    export_serializer_class = ExportUserProfileSerializer
+    export_serializer_class = ExportRoomProfileSerializer
     #导入
     import_serializer_class = RoomProfileImportSerializer
     import_field_dict = {'name':'教室名称', 'large':'教室容量', 'avatar':'出勤照片', 'number':'出勤人数'}

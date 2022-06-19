@@ -22,7 +22,7 @@ class BookSerializer(CustomModelSerializer):
 
 class BookCreateSerializer(CustomModelSerializer):
     """
-    信息新增-序列化器
+    预订新增-序列化器
     """
 
     def save(self, **kwargs):
@@ -41,7 +41,7 @@ class BookCreateSerializer(CustomModelSerializer):
 
 class BookUpdateSerializer(CustomModelSerializer):
     """
-    课表管理 更新时的列化器
+    预订管理 更新时的列化器
     """
     def save(self, **kwargs):
         data = super().save(**kwargs)

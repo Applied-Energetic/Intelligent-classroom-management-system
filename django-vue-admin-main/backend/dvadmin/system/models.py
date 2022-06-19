@@ -141,7 +141,7 @@ class Room(CoreModel):
         self.dept_belong_id = id
 
     def set_number_uses(self):
-        if self.avatar != None:
+        if self.avatar != None and len(self.avatar) != 0:
             self.number = face_identify(self.avatar)
             if self.large != 0:
                 self.uses =  '{:.2%}'.format(self.number/self.large)
